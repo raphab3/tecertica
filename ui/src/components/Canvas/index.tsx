@@ -32,7 +32,6 @@ export const Canvas = ({
     draw()
 
     function rect(r: any) {
-      console.log(r)
       context.beginPath()
       context.fillStyle = 'green'
       if (r.lineWidth) {
@@ -57,6 +56,10 @@ export const Canvas = ({
       const mx = e.clientX - offsetX
       const my = e.clientY - offsetY
       setDragok(false)
+      const s: any = shapes[isDown]
+      if (s && ((mx < s.x && mx < s.x + s.width) || (mx > s.x && mx > s.x + s.width) || (my > s.y && my > s.y + s.height) || (my < s.y && my < s.y + s.height))) {
+        setIsDown(-1)
+      }
       for (let i = 0; i < shapes.length; i++) {
         const s = shapes[i]
         if (mx > s.x && mx < s.x + s.width && my > s.y && my < s.y + s.height) {
@@ -112,7 +115,6 @@ export const Canvas = ({
   }, [screen.width, isDown, screen.height, shapes, startX, startY, offsetX, offsetY])
 
   useEffect(() => {
-    console.log('preview', preview)
     if (preview) {
       const stylesCanvas: any = document.getElementById('canvas')
       stylesCanvas.style.backgroundImage = `url(${preview})`

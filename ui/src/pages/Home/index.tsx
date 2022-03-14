@@ -67,13 +67,18 @@ export const Home = () => {
   React.useEffect(() => {
     setPreview(models[0].url)
   }, [])
-
   const typesAccept = ['image/png', 'image/jpg', 'image/jpeg']
 
   function isSelected() {
     if (shapes.length && isDown !== -1) {
       const shapesForSelect = shapes.map(shape => {
         (shape.index === isDown) ? shape.lineWidth = 4 : shape.lineWidth = 0
+        return shape
+      })
+      setShapes(shapesForSelect)
+    } else if (isDown === -1) {
+      const shapesForSelect = shapes.map(shape => {
+        shape.lineWidth = 0
         return shape
       })
       setShapes(shapesForSelect)
@@ -154,7 +159,6 @@ export const Home = () => {
     const csvJson: any[] = []
     for (let i = 1; i < lines.length; i++) {
       const lineColumn = lines[i].split(/,/g)
-      console.log(lineColumn)
       const lineColumnAltered = lineColumn.map((value: any) =>
         value.trim().toLowerCase().replace(/"/g, '')
       )
@@ -430,7 +434,6 @@ export const Home = () => {
                   name="CSV"
                   id="CSV"
                   onChange={(e: any) => {
-                    console.log(e.target.files[0])
                     if (
                       ['application/vnd.ms-excel', 'text/csv'].includes(
                         e.target.files[0].type
