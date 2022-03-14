@@ -57,6 +57,7 @@ export const Canvas = ({
       const my = e.clientY - offsetY
       setDragok(false)
       const s: any = shapes[isDown]
+      console.log(s)
       if (s && ((mx < s.x && mx < s.x + s.width) || (mx > s.x && mx > s.x + s.width) || (my > s.y && my > s.y + s.height) || (my < s.y && my < s.y + s.height))) {
         setIsDown(-1)
       }

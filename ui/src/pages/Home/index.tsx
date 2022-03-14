@@ -145,7 +145,14 @@ export const Home = () => {
 
   function removerInput() {
     const inputs = shapes.filter(shape => shape.index !== isDown)
-    setShapes(inputs)
+    const newInputs = inputs.map(input => {
+      if (input.index > isDown) {
+        input.index -= 1
+      }
+      return input
+    })
+    setShapes(newInputs)
+    setIndex(index - 1)
   }
 
   function processCsvToJson(csv: any) {
