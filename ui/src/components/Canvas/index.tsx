@@ -5,7 +5,8 @@ export const Canvas = ({
   shapes,
   setShapes,
   preview,
-  setIsDown
+  setIsDown,
+  isDown
 }: any) => {
   const [startX, setStartX] = React.useState(0)
   const [startY, setStartY] = React.useState(0)
@@ -29,13 +30,21 @@ export const Canvas = ({
     canvas.onmouseup = myUp
     canvas.onmousemove = myMove
     draw()
+
     function rect(r: any) {
+      console.log(r)
+      context.beginPath()
       context.fillStyle = 'green'
-      context.lineWidth = r.lineWidth
-      context.strokeStyle = r.strokeStyle
-      context.stroke()
-      context.fillText(r.head, r.x, r.y)
+      if (r.lineWidth) {
+        context.lineWidth = r.lineWidth
+        context.strokeStyle = r.strokeStyle
+        context.strokeRect(r.x, r.y, r.width, r.height)
+        context.fillText(r.head, r.x, r.y - 4)
+      } else {
+        context.fillText(r.head, r.x, r.y)
+      }
       context.fillRect(r.x, r.y, r.width, r.height)
+      context.closePath()
     }
 
     function draw() {
@@ -100,7 +109,7 @@ export const Canvas = ({
         setStartY(my)
       }
     }
-  }, [screen.width, screen.height, shapes, startX, startY, offsetX, offsetY])
+  }, [screen.width, isDown, screen.height, shapes, startX, startY, offsetX, offsetY])
 
   useEffect(() => {
     console.log('preview', preview)

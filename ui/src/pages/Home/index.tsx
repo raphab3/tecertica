@@ -14,7 +14,6 @@ import {
 } from '@chakra-ui/react'
 import { FiUpload } from 'react-icons/fi'
 import { AiOutlinePlus, AiOutlineLine, AiOutlinePlusCircle } from 'react-icons/ai'
-// import { ToastExample } from './components/Toast'
 import { BsTrash } from 'react-icons/bs'
 import { ColorModeSwitcher } from 'src/ColorModeSwitcher'
 import { Canvas } from 'src/components/Canvas'
@@ -71,6 +70,19 @@ export const Home = () => {
 
   const typesAccept = ['image/png', 'image/jpg', 'image/jpeg']
 
+  function isSelected() {
+    if (shapes.length && isDown !== -1) {
+      const shapesForSelect = shapes.map(shape => {
+        (shape.index === isDown) ? shape.lineWidth = 4 : shape.lineWidth = 0
+        return shape
+      })
+      setShapes(shapesForSelect)
+    }
+  }
+  React.useEffect(() => {
+    isSelected()
+  }, [isDown])
+
   function adicionaInput(name: any) {
     const randomNumber = Math.random()
     const positionX =
@@ -87,7 +99,7 @@ export const Home = () => {
       height: 20,
       fill: '#61ff04',
       isDragging: false,
-      strokeStyle: '#61ff04',
+      strokeStyle: 'black',
       lineWidth: 0
     }
     setIndex(index + 1)
@@ -386,7 +398,7 @@ export const Home = () => {
             </Box>
             <Flex marginTop={5} align={'center'} justify={'center'}>
               <Flex bgImg={`url(${require('../../assets/images/background.png')})`} borderRadius={10} padding={5} gap={6} margin={'auto auto'}>
-                {(jsonClients) ? Object.keys(jsonClients[0]).map(header => <Button key={header} value={header} onClick={(e) => adicionaInput(e.currentTarget.value)} colorScheme='teal' leftIcon={<AiOutlinePlusCircle color={'green'} style={{ fontSize: '1.5em' }} />}>{header}</Button>) : ''}
+                {(jsonClients?.length) ? Object.keys(jsonClients[0]).map(header => <Button key={header} value={header} onClick={(e) => adicionaInput(e.currentTarget.value)} colorScheme='teal' leftIcon={<AiOutlinePlusCircle color={'green'} style={{ fontSize: '1.5em' }} />}>{header}</Button>) : ''}
               </Flex>
             </Flex>
           </GridItem>
