@@ -1,12 +1,12 @@
-body{
+body {
   box-sizing: border-box;
   margin: 0;
   border: 0;
 }
-#canvas{
+#canvas {
   background-size: cover;
   background-position: center;
-  border:1px solid purple;
+  border: 1px solid purple;
   border-radius: 10px;
   box-shadow: 10px 5px 5px black;
 }

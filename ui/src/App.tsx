@@ -6,46 +6,36 @@ import csv from 'csvtojson'
 import {
   Box,
   Button,
-  Center,
   ChakraProvider,
   Flex,
   Grid,
   GridItem,
-  IconButton,
   Select,
-  Spacer,
   Table,
-  TableCaption,
   Tbody,
   Td,
-  Text,
   Thead,
   theme,
-  Tr,
-  useColorModeValue,
-  useToast
+  Tr
 } from '@chakra-ui/react'
 import { ColorModeSwitcher } from './ColorModeSwitcher'
 import { Canvas } from './components/Canvas'
 import { FiUpload } from 'react-icons/fi'
-import { AiOutlinePlus, AiOutlineLine } from 'react-icons/ai'
+import { AiOutlinePlus, AiOutlineLine, AiOutlinePlusCircle } from 'react-icons/ai'
 import { ToastExample } from './components/Toast'
 import { BsTrash } from 'react-icons/bs'
-import {AiOutlinePlusCircle} from 'react-icons/ai'
 
 interface Shapes {
-  index: number,
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  fill: string;
-  isDragging: boolean;
-  strokeStyle: string;
-  lineWidth: number;
+  index: number
+  x: number
+  y: number
+  width: number
+  height: number
+  fill: string
+  isDragging: boolean
+  strokeStyle: string
+  lineWidth: number
 }
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 
 export const App = () => {
   const [page, setPage] = React.useState(0)
@@ -80,30 +70,18 @@ export const App = () => {
       name: 'modelo 3'
     }
   ])
-  const toast = useToast()
   React.useEffect(() => {
     setPreview(models[0].url)
   }, [])
-  const typesAccept = ['image/png', 'image/jpg', 'image/jpeg']
 
-  // React.useEffect(() => {
-  //   const rects = [...shapes]
-  //   rects.map(rect => {
-  //     if (rect.index === isDown) {
-  //       rect.strokeStyle = 'black'
-  //       return rect
-  //     } else {
-  //       rect.strokeStyle = '#61ff04'
-  //       return rect
-  //     }
-  //   })
-  //   setShapes(rects)
-  // }, [isDown])
+  const typesAccept = ['image/png', 'image/jpg', 'image/jpeg']
 
   function adicionaInput(name: any) {
     const randomNumber = Math.random()
-    const positionX = 250 + ((randomNumber > 0.5) ? randomNumber * 200 : randomNumber * (-200))
-    const positionY = 250 + ((randomNumber > 0.5) ? randomNumber * 100 : randomNumber * (-100))
+    const positionX =
+      250 + (randomNumber > 0.5 ? randomNumber * 200 : randomNumber * -200)
+    const positionY =
+      250 + (randomNumber > 0.5 ? randomNumber * 100 : randomNumber * -100)
 
     const shape = {
       index: index,
@@ -163,12 +141,16 @@ export const App = () => {
   function processCsvToJson(csv: any) {
     const lines = csv.split(/\r?\n/g)
     const firstLine = lines[0]
-    const columns = firstLine.split(/,/g).map((value: any) => value.replace(/"/g, ''))
+    const columns = firstLine
+      .split(/,/g)
+      .map((value: any) => value.replace(/"/g, ''))
     const csvJson: any[] = []
     for (let i = 1; i < lines.length; i++) {
       const lineColumn = lines[i].split(/,/g)
       console.log(lineColumn)
-      const lineColumnAltered = lineColumn.map((value: any) => value.trim().toLowerCase().replace(/"/g, ''))
+      const lineColumnAltered = lineColumn.map((value: any) =>
+        value.trim().toLowerCase().replace(/"/g, '')
+      )
       let object = {}
 
       for (let i = 0; i <= columns.length; i++) {
@@ -187,8 +169,6 @@ export const App = () => {
     e.preventDefault()
     const file = e.target.files[0]
     const reader = new FileReader()
-    // console.log(reader)
-    // reader.readAsDataURL(file)
     reader.onloadend = () => {
       const csv = reader.result
       processCsvToJson(csv)
@@ -244,36 +224,76 @@ export const App = () => {
       <Flex>
         <ColorModeSwitcher />
       </Flex>
-      <Grid padding={10} templateRows='1fr 1fr' templateColumns=' 1fr 1fr'>
+      <Grid padding={10} templateRows="1fr 1fr" templateColumns=" 1fr 1fr">
         <Flex position={'absolute'} w="100vw" h="100vh" bg={'light'}>
-          <GridItem >
-            <Box flexDirection={'column'} >
-              <Box display={'flex'} flexDir={'row'} justifyContent={'space-between'} margin={3}>
-                <Button onClick={() => document.getElementById('certificate')?.click()} leftIcon={<FiUpload />}>Anexar Certificado</Button>
-                <Select boxShadow={'dark-lg'} variant='filled' id="models" width='20vw' onChange={(e) => {
-                  setPreview(e.target.value)
-                }}>
-                  {models.map(model => {
+          <GridItem>
+            <Box flexDirection={'column'}>
+              <Box
+                display={'flex'}
+                flexDir={'row'}
+                justifyContent={'space-between'}
+                margin={3}
+              >
+                <Button
+                  onClick={() =>
+                    document.getElementById('certificate')?.click()
+                  }
+                  leftIcon={<FiUpload />}
+                >
+                  Anexar Certificado
+                </Button>
+                <Select
+                  boxShadow={'dark-lg'}
+                  variant="filled"
+                  id="models"
+                  width="20vw"
+                  onChange={(e) => {
+                    setPreview(e.target.value)
+                  }}
+                >
+                  {models.map((model) => {
                     if (model.index === 0) {
-                      return <option key={model.index} value={model.url} selected disabled hidden onSelect={() => {
-                        setPreview(model.url)
-                      }}>{model.name}</option>
+                      return (
+                        <option
+                          key={model.index}
+                          value={model.url}
+                          selected
+                          disabled
+                          hidden
+                          onSelect={() => {
+                            setPreview(model.url)
+                          }}
+                        >
+                          {model.name}
+                        </option>
+                      )
                     } else {
-                      return <option key={model.index} value={model.url}>{model.name}</option>
+                      return (
+                        <option key={model.index} value={model.url}>
+                          {model.name}
+                        </option>
+                      )
                     }
                   })}
                 </Select>
               </Box>
               <Box boxShadow={'dark-lg'}>
-                <input ref={ref} type="file" name="certificate" id="certificate" onChange={(e: any) => {
-                  if (typesAccept.includes(e.target.files[0].type)) {
-                    handleSubmit(e)
-                    setActive(true)
-                  } else {
-                    e.target.value = ''
-                    alert('tipos aceitos png, jpg, jpeg')
-                  }
-                }} accept='.png,.jpg,.jpeg' />
+                <input
+                  ref={ref}
+                  type="file"
+                  name="certificate"
+                  id="certificate"
+                  onChange={(e: any) => {
+                    if (typesAccept.includes(e.target.files[0].type)) {
+                      handleSubmit(e)
+                      setActive(true)
+                    } else {
+                      e.target.value = ''
+                      alert('tipos aceitos png, jpg, jpeg')
+                    }
+                  }}
+                  accept=".png,.jpg,.jpeg"
+                />
               </Box>
               <Box display={'flex'} flexDir={'row'}>
                 <Canvas shapes={shapes} setShapes={setShapes} preview={preview} setIsDown={setIsDown} isDown={isDown} />
@@ -282,74 +302,191 @@ export const App = () => {
                     <Button _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={adicionaInput} >Adicionar  {screen.width < 600 ? '' : 'Campo'}</Button>
                     <Button _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={removerInput}>Remover {screen.width < 600 ? '' : 'Campo'}</Button>
                   </Box>
-                  <Box display={'flex'} width={screen.width / 9} flexDirection={'column'}>
+                  <Box
+                    display={'flex'}
+                    width={window.screen.width / 9}
+                    flexDirection={'column'}
+                  >
+                    <Box
+                      display={'flex'}
+                      justifyContent={'center'}
+                      alignContent={'center'}
+                    >
+                      <Button
+                        _hover={{ transform: 'scale(1.2)' }}
+                        colorScheme="teal"
+                        variant="solid"
+                        iconSpacing={'auto'}
+                        rightIcon={<AiOutlineLine />}
+                        type="button"
+                        onClick={decreaseWidth}
+                      ></Button>
 
-                    <Box display={'flex'} justifyContent={'center'} alignContent={'center'}>
+                      <Button
+                        _active={{}}
+                        _hover={{}}
+                        cursor={'default'}
+                        colorScheme="teal"
+                        variant="outline"
+                      >
+                        largura
+                      </Button>
 
-                      <Button _hover={{ transform: 'scale(1.2)' }} colorScheme='teal' variant='solid' iconSpacing={'auto'} rightIcon={<AiOutlineLine />} type="button" onClick={decreaseWidth}></Button>
-
-                      <Button _active={{}} _hover={{}} cursor={'default'} colorScheme='teal' variant='outline'>largura</Button>
-
-                      <Button _hover={{ transform: 'scale(1.2)' }} colorScheme='teal' variant='solid' iconSpacing={'auto'} rightIcon={<AiOutlinePlus />} type="button" onClick={() => {
-                        increaseWidth()
-                      }}></Button>
-
+                      <Button
+                        _hover={{ transform: 'scale(1.2)' }}
+                        colorScheme="teal"
+                        variant="solid"
+                        iconSpacing={'auto'}
+                        rightIcon={<AiOutlinePlus />}
+                        type="button"
+                        onClick={() => {
+                          increaseWidth()
+                        }}
+                      ></Button>
                     </Box>
 
-                    <Box marginBottom={10} marginTop={10} display={'flex'} justifyContent={'center'} alignContent={'center'}>
+                    <Box
+                      marginBottom={10}
+                      marginTop={10}
+                      display={'flex'}
+                      justifyContent={'center'}
+                      alignContent={'center'}
+                    >
+                      <Button
+                        _hover={{ transform: 'scale(1.2)' }}
+                        colorScheme="teal"
+                        variant="solid"
+                        iconSpacing={'auto'}
+                        rightIcon={<AiOutlineLine />}
+                        type="button"
+                        onClick={decreaseHeight}
+                      ></Button>
 
-                      <Button _hover={{ transform: 'scale(1.2)' }} colorScheme='teal' variant='solid' iconSpacing={'auto'} rightIcon={<AiOutlineLine />} type="button" onClick={decreaseHeight}></Button>
+                      <Button
+                        _active={{}}
+                        _hover={{}}
+                        cursor={'default'}
+                        colorScheme="teal"
+                        variant="outline"
+                      >
+                        altura
+                      </Button>
 
-                      <Button _active={{}} _hover={{}} cursor={'default'} colorScheme='teal' variant='outline'>altura</Button>
-
-                      <Button _hover={{ transform: 'scale(1.2)' }} colorScheme='teal' variant='solid' iconSpacing={'auto'} rightIcon={<AiOutlinePlus />} type="button" onClick={() => {
-                        increaseHeight()
-                      }}></Button>
+                      <Button
+                        _hover={{ transform: 'scale(1.2)' }}
+                        colorScheme="teal"
+                        variant="solid"
+                        iconSpacing={'auto'}
+                        rightIcon={<AiOutlinePlus />}
+                        type="button"
+                        onClick={() => {
+                          increaseHeight()
+                        }}
+                      ></Button>
                     </Box>
                     <ToastExample active={active} setActive={setActive} />
                   </Box>
                 </Box>
               </Box>
             </Box>
-            <Flex  marginTop={5} align={'center'}  justify={'center'}>
+            <Flex marginTop={5} align={'center'} justify={'center'}>
               <Flex bgImg={`url(${require('./assets/images/background.png')})`} borderRadius={10} padding={5} gap={6} margin={'auto auto'}>
-                {(jsonClients) ? Object.keys(jsonClients[0]).map(header => <Button key={header} value={header} onClick={(e) => adicionaInput(e.currentTarget.value)} colorScheme='teal' leftIcon={<AiOutlinePlusCircle color={'green'} style={{fontSize: "1.5em" }}/>}>{header}</Button>) : ''}
+                {(jsonClients) ? Object.keys(jsonClients[0]).map(header => <Button key={header} value={header} onClick={(e) => adicionaInput(e.currentTarget.value)} colorScheme='teal' leftIcon={<AiOutlinePlusCircle color={'green'} style={{ fontSize: '1.5em' }} />}>{header}</Button>) : ''}
               </Flex>
             </Flex>
           </GridItem>
           <GridItem>
-            <Flex marginTop={5} marginLeft={10} flexDir={'column'} align={'center'}>
+            <Flex
+              marginTop={5}
+              marginLeft={10}
+              flexDir={'column'}
+              align={'center'}
+            >
               <Flex gap={5}>
-                <Button onClick={() => document.getElementById('CSV')?.click()} leftIcon={<FiUpload />} marginBottom={5}>Adicionar CSV</Button>
-                <Button leftIcon={<BsTrash />} onClick={clearCsv}>Limpar CSV</Button>
+                <Button
+                  onClick={() => document.getElementById('CSV')?.click()}
+                  leftIcon={<FiUpload />}
+                  marginBottom={5}
+                >
+                  Adicionar CSV
+                </Button>
+                <Button leftIcon={<BsTrash />} onClick={clearCsv}>
+                  Limpar CSV
+                </Button>
               </Flex>
               <span>Lista de pessoas para certificar - {(jsonClients?.length) ? jsonClients?.length - 1 : 0}</span>
               <span>Página {`${Math.ceil(page / 10) + 1} de ${(jsonClients?.length) ? Math.ceil(jsonClients?.length / 10) : 1}`}</span>
               <Box boxShadow={'dark-lg'}>
-                <input ref={ref} type="file" name="CSV" id="CSV" onChange={(e: any) => {
-                  console.log(e.target.files[0].type)
-                  if (e.target.files[0].type === 'text/csv') {
-                    loadCsv(e)
-                  } else {
-                    e.target.value = ''
-                    alert('tipo aceito .csv')
-                  }
-                }} accept='text/csv' />
+                <input
+                  ref={ref}
+                  type="file"
+                  name="CSV"
+                  id="CSV"
+                  onChange={(e: any) => {
+                    console.log(e.target.files[0])
+                    if (
+                      ['application/vnd.ms-excel', 'text/csv'].includes(
+                        e.target.files[0].type
+                      )
+                    ) {
+                      loadCsv(e)
+                    } else {
+                      e.target.value = ''
+                      alert('ERROR: Tipo Incorreto, tipo aceito => .csv')
+                    }
+                  }}
+                  accept="text/csv"
+                />
               </Box>
-              <Table size={'sm'} variant={'striped'} colorScheme={'teal'} margin={5}>
+              <Table
+                size={'sm'}
+                variant={'striped'}
+                colorScheme={'teal'}
+                margin={5}
+              >
                 <Thead>
-                  <Tr>{(jsonClients?.length) ? Object.keys(jsonClients[0]).map(column => <Td key={Math.random()}>{column}</Td>) : []}</Tr>
+                  <Tr>
+                    {jsonClients?.length
+                      ? Object.keys(jsonClients[0]).map((column) => (
+                        <Td key={Math.random()}>{column}</Td>
+                      ))
+                      : []}
+                  </Tr>
                 </Thead>
                 <Tbody>
-                  {(jsonClients?.length) ? jsonClients.map((client: any) => <Tr>{Object.values(client).map((column: any) => <Td key={Math.random()} maxW={200} overflow={'hidden'} textOverflow={'ellipsis'} whiteSpace={'nowrap'} >{column}</Td>)}</Tr>).slice(page, page + 10) : []}
+                  {jsonClients?.length
+                    ? jsonClients
+                      .map((client: any) => (
+                        <Tr>
+                          {Object.values(client).map((column: any) => (
+                            <Td
+                              key={Math.random()}
+                              maxW={200}
+                              overflow={'hidden'}
+                              textOverflow={'ellipsis'}
+                              whiteSpace={'nowrap'}
+                            >
+                              {column}
+                            </Td>
+                          ))}
+                        </Tr>
+                      ))
+                      .slice(page, page + 10)
+                    : []}
                 </Tbody>
               </Table>
               <Flex justify={'space-between'}>
                 {jsonClients?.length
-                  ? <><Button onClick={previousPage}>Anterior</Button>
-                    <Button marginLeft={10} onClick={nextPage}>Próximo</Button></>
-                  : ''}
-
+                  ? (
+                    <>
+                      <Button onClick={previousPage}>Anterior</Button>
+                      <Button marginLeft={10} onClick={nextPage}>
+                        Próximo
+                      </Button>
+                    </>
+                  )
+                  : ''
+                }
               </Flex>
             </Flex>
           </GridItem>
