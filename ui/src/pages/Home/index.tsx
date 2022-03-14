@@ -14,7 +14,6 @@ import {
 } from '@chakra-ui/react'
 import { FiUpload } from 'react-icons/fi'
 import { AiOutlinePlus, AiOutlineLine, AiOutlinePlusCircle } from 'react-icons/ai'
-// import { ToastExample } from './components/Toast'
 import { BsTrash } from 'react-icons/bs'
 import { ColorModeSwitcher } from 'src/ColorModeSwitcher'
 import { Canvas } from 'src/components/Canvas'
