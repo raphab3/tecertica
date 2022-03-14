@@ -144,9 +144,7 @@ export const Home = () => {
   }
 
   function removerInput() {
-    const inputs = [...shapes]
-
-    inputs.splice(shapes.length - 1, 1)
+    const inputs = shapes.filter(shape => shape.index !== isDown)
     setShapes(inputs)
   }
 
