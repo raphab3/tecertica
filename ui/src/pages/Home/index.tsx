@@ -385,7 +385,7 @@ export const Home = () => {
             </Box>
             <Flex marginTop={5} align={'center'} justify={'center'}>
               <Flex bgImg={`url(${require('../../assets/images/background.png')})`} borderRadius={10} padding={5} gap={6} margin={'auto auto'}>
-                {(jsonClients) ? Object.keys(jsonClients[0]).map(header => <Button key={header} value={header} onClick={(e) => adicionaInput(e.currentTarget.value)} colorScheme='teal' leftIcon={<AiOutlinePlusCircle color={'green'} style={{ fontSize: '1.5em' }} />}>{header}</Button>) : ''}
+                {(jsonClients?.length) ? Object.keys(jsonClients[0]).map(header => <Button key={header} value={header} onClick={(e) => adicionaInput(e.currentTarget.value)} colorScheme='teal' leftIcon={<AiOutlinePlusCircle color={'green'} style={{ fontSize: '1.5em' }} />}>{header}</Button>) : ''}
               </Flex>
             </Flex>
           </GridItem>
