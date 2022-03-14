@@ -1,4 +1,4 @@
-import { Button, Drawer, Image } from '@chakra-ui/react'
+/* eslint-disable no-restricted-globals */
 import React, { useEffect, useRef } from 'react'
 import './styles.css'
 
@@ -35,11 +35,7 @@ export const Canvas = ({ shapes, setShapes, preview, setIsDown, isDown }: any) =
       context.lineWidth = r.lineWidth
       context.strokeStyle = r.strokeStyle
       context.stroke()
-      if (r.index === 0) {
-        context.fillText('NAME', r.x, r.y)
-      } else {
-        context.fillText('CPF', r.x, r.y)
-      }
+      context.fillText(r.head, r.x, r.y)
       context.fillRect(r.x, r.y, r.width, r.height)
     }
     // clear the canvas
@@ -140,9 +136,6 @@ export const Canvas = ({ shapes, setShapes, preview, setIsDown, isDown }: any) =
   useEffect(() => {
     console.log('preview', preview)
     if (preview) {
-      // const image = new Image();
-      // image.src = preview
-      // background image
       const stylesCanvas: any = document.getElementById('canvas')
       stylesCanvas.style.backgroundImage = `url(${preview})`
       stylesCanvas.style.width = WIDTH

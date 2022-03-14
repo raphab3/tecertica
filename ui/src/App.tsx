@@ -1,7 +1,7 @@
+/* eslint-disable no-restricted-globals */
 import * as React from 'react'
 import path from 'path'
 import csv from 'csvtojson'
-import csvDatas from './assets/csvDatas'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import {
   Box,
@@ -31,6 +31,7 @@ import { FiUpload } from 'react-icons/fi'
 import { AiOutlinePlus, AiOutlineLine } from 'react-icons/ai'
 import { ToastExample } from './components/Toast'
 import { BsTrash } from 'react-icons/bs'
+import {AiOutlinePlusCircle} from 'react-icons/ai'
 
 interface Shapes {
   index: number,
@@ -48,6 +49,8 @@ interface Shapes {
 
 export const App = () => {
   const [page, setPage] = React.useState(0)
+  const [inputAdded, setInputAdded] = React.useState<string[]>([])
+  const [headers, setHeaders] = React.useState(0)
   const [jsonClients, setJsonClients] = React.useState<any[]>()
   const [shapes, setShapes] = React.useState<Shapes[]>([])
   const [preview, setPreview] = React.useState<any>()
@@ -58,22 +61,22 @@ export const App = () => {
   const [models, setModels] = React.useState([
     {
       index: 0,
-      url: require('./config/inicial.png'),
+      url: require('./assets/images/inicial.png'),
       name: 'selecione um certificado'
     },
     {
       index: 1,
-      url: require('./config/model01.png'),
+      url: require('./assets/images/model01.png'),
       name: 'modelo 1'
     },
     {
       index: 2,
-      url: require('./config/model02.png'),
+      url: require('./assets/images/model02.png'),
       name: 'modelo 2'
     },
     {
       index: 3,
-      url: require('./config/model03.png'),
+      url: require('./assets/images/model03.png'),
       name: 'modelo 3'
     }
   ])
@@ -97,13 +100,14 @@ export const App = () => {
   //   setShapes(rects)
   // }, [isDown])
 
-  function adicionaInput() {
+  function adicionaInput(name: any) {
     const randomNumber = Math.random()
     const positionX = 250 + ((randomNumber > 0.5) ? randomNumber * 200 : randomNumber * (-200))
     const positionY = 250 + ((randomNumber > 0.5) ? randomNumber * 100 : randomNumber * (-100))
 
     const shape = {
       index: index,
+      head: name,
       x: positionX,
       y: positionY,
       width: 180,
@@ -211,9 +215,9 @@ export const App = () => {
   }
 
   function nextPage() {
-    if ((jsonClients) && page + 10 < jsonClients.length) {
+    if ((jsonClients) && page + 10 <= jsonClients.length) {
       setPage(page + 10)
-    } else if ((jsonClients) && page + 10 > jsonClients.length) {
+    } else if ((jsonClients) && (page + 10 > jsonClients.length && jsonClients.length >= 10)) {
       setPage(jsonClients?.length)
     }
   }
@@ -235,7 +239,6 @@ export const App = () => {
       setJsonClients(JSON.parse(csv))
     }
   }, [])
-
   return (
     <ChakraProvider theme={theme}>
       <Flex>
@@ -274,7 +277,7 @@ export const App = () => {
               </Box>
               <Box display={'flex'} flexDir={'row'}>
                 <Canvas shapes={shapes} setShapes={setShapes} preview={preview} setIsDown={setIsDown} isDown={isDown} />
-                <Box borderRadius={10} boxShadow={'dark-lg'} bgImg={`url(${require('./config/background.png')})`} display={'flex'} justifyContent={'space-between'} alignContent={'space-between'} flexDir={'column'} >
+                <Box borderRadius={10} boxShadow={'dark-lg'} bgImg={`url(${require('./assets/images/background.png')})`} display={'flex'} justifyContent={'space-between'} alignContent={'space-between'} flexDir={'column'} >
                   <Box display={'flex'} width={screen.width / 9} flexDirection={'column'}>
                     <Button _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={adicionaInput} >Adicionar  {screen.width < 600 ? '' : 'Campo'}</Button>
                     <Button _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={removerInput}>Remover {screen.width < 600 ? '' : 'Campo'}</Button>
@@ -308,6 +311,11 @@ export const App = () => {
                 </Box>
               </Box>
             </Box>
+            <Flex  marginTop={5} align={'center'}  justify={'center'}>
+              <Flex bgImg={`url(${require('./assets/images/background.png')})`} borderRadius={10} padding={5} gap={6} margin={'auto auto'}>
+                {(jsonClients) ? Object.keys(jsonClients[0]).map(header => <Button key={header} value={header} onClick={(e) => adicionaInput(e.currentTarget.value)} colorScheme='teal' leftIcon={<AiOutlinePlusCircle color={'green'} style={{fontSize: "1.5em" }}/>}>{header}</Button>) : ''}
+              </Flex>
+            </Flex>
           </GridItem>
           <GridItem>
             <Flex marginTop={5} marginLeft={10} flexDir={'column'} align={'center'}>
@@ -316,7 +324,7 @@ export const App = () => {
                 <Button leftIcon={<BsTrash />} onClick={clearCsv}>Limpar CSV</Button>
               </Flex>
               <span>Lista de pessoas para certificar - {(jsonClients?.length) ? jsonClients?.length - 1 : 0}</span>
-              <span>Página {`${Math.floor(page / 10) + 1} de ${(jsonClients?.length) ? Math.floor(jsonClients?.length / 10) : 1}`}</span>
+              <span>Página {`${Math.ceil(page / 10) + 1} de ${(jsonClients?.length) ? Math.ceil(jsonClients?.length / 10) : 1}`}</span>
               <Box boxShadow={'dark-lg'}>
                 <input ref={ref} type="file" name="CSV" id="CSV" onChange={(e: any) => {
                   console.log(e.target.files[0].type)
