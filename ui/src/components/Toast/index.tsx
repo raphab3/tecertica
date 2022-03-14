@@ -16,7 +16,7 @@ export const ToastExample = ({ active, setActive }: any) => {
       position={'absolute'}
       _hover={{ bg: 'none' }}
       cursor={'default'}
-      variant='ghost'
+      variant="ghost"
       id="button"
       onClick={() =>
         toast({
@@ -27,7 +27,6 @@ export const ToastExample = ({ active, setActive }: any) => {
           isClosable: true
         })
       }
-    >
-    </Button>
+    ></Button>
   )
 }

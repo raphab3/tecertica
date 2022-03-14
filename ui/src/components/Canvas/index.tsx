@@ -2,7 +2,13 @@ import { Button, Drawer, Image } from '@chakra-ui/react'
 import React, { useEffect, useRef } from 'react'
 import './styles.css'
 
-export const Canvas = ({ shapes, setShapes, preview, setIsDown, isDown }: any) => {
+export const Canvas = ({
+  shapes,
+  setShapes,
+  preview,
+  setIsDown,
+  isDown
+}: any) => {
   const [startX, setStartX] = React.useState(0)
   const [startY, setStartY] = React.useState(0)
   const [dragok, setDragok] = React.useState(false)
@@ -100,8 +106,8 @@ export const Canvas = ({ shapes, setShapes, preview, setIsDown, isDown }: any) =
       if (dragok) {
         // tell the browser we're handling this mouse event
         // get the current mouse position
-        const mx = (e.clientX - offsetX)
-        const my = (e.clientY - offsetY)
+        const mx = e.clientX - offsetX
+        const my = e.clientY - offsetY
         // calculate the distance the mouse has moved
         // since the last mousemove
         const dx = mx - startX
@@ -116,13 +122,13 @@ export const Canvas = ({ shapes, setShapes, preview, setIsDown, isDown }: any) =
             if (dx < 0) {
               s.x += s.x > 0 ? dx : 1
             } else if (dx > 0) {
-              s.x += s.x > (WIDTH - s.width) ? -1 : dx
+              s.x += s.x > WIDTH - s.width ? -1 : dx
             }
 
             if (dy < 0) {
               s.y += s.y > 0 ? dy : 1
             } else if (dy > 0) {
-              s.y += s.y > (HEIGHT - s.height) ? -1 : dy
+              s.y += s.y > HEIGHT - s.height ? -1 : dy
             }
           }
         }
@@ -152,7 +158,7 @@ export const Canvas = ({ shapes, setShapes, preview, setIsDown, isDown }: any) =
 
   return (
     <>
-      <canvas id='canvas' ref={canvasRef} />
+      <canvas id="canvas" ref={canvasRef} />
     </>
   )
 }
