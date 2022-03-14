@@ -2,7 +2,6 @@ import * as React from 'react'
 import {
   Box,
   Button,
-  ChakraProvider,
   Flex,
   Grid,
   GridItem,
@@ -11,7 +10,6 @@ import {
   Tbody,
   Td,
   Thead,
-  theme,
   Tr
 } from '@chakra-ui/react'
 import { AiOutlinePlus, AiOutlineLine } from 'react-icons/ai'
@@ -20,6 +18,7 @@ import { ColorModeSwitcher } from 'src/ColorModeSwitcher'
 import { FiUpload } from 'react-icons/fi'
 import { Canvas } from 'src/components/Canvas'
 import { ToastExample } from 'src/components/Toast'
+import { getFromStorage, saveToStorage, deleteFromStorage } from 'src/shared/Providers/Storage.provider'
 
 interface Shapes {
   index: number
@@ -41,6 +40,7 @@ export const Home = () => {
   const [index, setIndex] = React.useState(0)
   const [isDown, setIsDown] = React.useState(-1)
   const [active, setActive] = React.useState(false)
+  const [stateColumns, setStateColumns] = React.useState<any[]>([])
   const ref = React.useRef<any>()
   const [models] = React.useState([
     {
@@ -88,8 +88,12 @@ export const Home = () => {
       strokeStyle: '#61ff04',
       lineWidth: 0
     }
-    setIndex(index + 1)
-    setShapes([...shapes, shape])
+
+    const inputs = getFromStorage('columns')
+    if (index < inputs.length) {
+      setIndex(index + 1)
+      setShapes([...shapes, shape])
+    }
   }
 
   function increaseWidth() {
@@ -129,22 +133,23 @@ export const Home = () => {
 
     inputs.splice(shapes.length - 1, 1)
     setShapes(inputs)
+    if (index > 0) {
+      setIndex(index - 1)
+    }
   }
 
   function processCsvToJson(csv: any) {
     const lines = csv.split(/\r?\n/g)
-    const firstLine = lines[0]
-    const columns = firstLine
-      .split(/,/g)
-      .map((value: any) => value.replace(/"/g, ''))
+    const columns: any[] = extractHeaderTable(lines)
     const csvJson: any[] = []
+
     for (let i = 1; i < lines.length; i++) {
       const lineColumn = lines[i].split(/,/g)
       const lineColumnAltered = lineColumn.map((value: any) =>
         value.trim().toLowerCase().replace(/"/g, '')
       )
-      let object = {}
 
+      let object = {}
       for (let i = 0; i <= columns.length; i++) {
         if (columns[i]) {
           object = { ...object, [columns[i]]: lineColumnAltered[i] }
@@ -152,9 +157,19 @@ export const Home = () => {
       }
       csvJson.push(object)
     }
-    window.localStorage.setItem('csv', JSON.stringify(csvJson))
+    saveToStorage('csv', csvJson)
+    saveToStorage('columns', columns)
     setJsonClients(csvJson)
+    setStateColumns(columns)
     resetInput()
+  }
+
+  function extractHeaderTable(lines: any[]) {
+    const firstLine = lines[0]
+    const columns = firstLine
+      .split(/,/g)
+      .map((value: any) => value.replace(/"/g, ''))
+    return columns
   }
 
   function loadCsv(e: any) {
@@ -202,19 +217,22 @@ export const Home = () => {
   }
 
   function clearCsv() {
-    window.localStorage.removeItem('csv')
+    deleteFromStorage('csv')
+    deleteFromStorage('columns')
     setJsonClients([])
   }
 
   React.useEffect(() => {
-    const csv = window.localStorage.getItem('csv')
-    if (csv) {
-      setJsonClients(JSON.parse(csv))
+    const csv = getFromStorage('csv')
+    const columns = getFromStorage('columns')
+    if (csv && columns) {
+      setJsonClients(csv)
+      setStateColumns(columns)
     }
   }, [])
 
   return (
-    <ChakraProvider theme={theme}>
+    <>
       <Flex>
         <ColorModeSwitcher />
       </Flex>
@@ -527,6 +545,6 @@ export const Home = () => {
           </GridItem>
         </Flex>
       </Grid>
-    </ChakraProvider>
+    </>
   )
 }
