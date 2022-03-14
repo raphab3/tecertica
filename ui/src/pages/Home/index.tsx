@@ -80,7 +80,7 @@ export const Home = () => {
 
     const shape = {
       index: index,
-      head: name,
+      head: name.toUpperCase(),
       x: positionX,
       y: positionY,
       width: 180,
