@@ -2,7 +2,6 @@ import * as React from 'react'
 import {
   Box,
   Button,
-  ChakraProvider,
   Flex,
   Grid,
   GridItem,
@@ -11,13 +10,13 @@ import {
   Tbody,
   Td,
   Thead,
-  theme,
   Tr
 } from '@chakra-ui/react'
-import { AiOutlinePlus, AiOutlineLine } from 'react-icons/ai'
+import { FiUpload } from 'react-icons/fi'
+import { AiOutlinePlus, AiOutlineLine, AiOutlinePlusCircle } from 'react-icons/ai'
+// import { ToastExample } from './components/Toast'
 import { BsTrash } from 'react-icons/bs'
 import { ColorModeSwitcher } from 'src/ColorModeSwitcher'
-import { FiUpload } from 'react-icons/fi'
 import { Canvas } from 'src/components/Canvas'
 import { ToastExample } from 'src/components/Toast'
 
@@ -35,6 +34,8 @@ interface Shapes {
 
 export const Home = () => {
   const [page, setPage] = React.useState(0)
+  const [inputAdded, setInputAdded] = React.useState<string[]>([])
+  const [headers, setHeaders] = React.useState(0)
   const [jsonClients, setJsonClients] = React.useState<any[]>()
   const [shapes, setShapes] = React.useState<Shapes[]>([])
   const [preview, setPreview] = React.useState<any>()
@@ -42,25 +43,25 @@ export const Home = () => {
   const [isDown, setIsDown] = React.useState(-1)
   const [active, setActive] = React.useState(false)
   const ref = React.useRef<any>()
-  const [models] = React.useState([
+  const [models, setModels] = React.useState([
     {
       index: 0,
-      url: require('../../assets/inicial.png'),
+      url: require('../../assets/images/inicial.png'),
       name: 'selecione um certificado'
     },
     {
       index: 1,
-      url: require('../../assets/model01.png'),
+      url: require('../../assets/images/model01.png'),
       name: 'modelo 1'
     },
     {
       index: 2,
-      url: require('../../assets/model02.png'),
+      url: require('../../assets/images/model02.png'),
       name: 'modelo 2'
     },
     {
       index: 3,
-      url: require('../../assets/model03.png'),
+      url: require('../../assets/images/model03.png'),
       name: 'modelo 3'
     }
   ])
@@ -70,7 +71,7 @@ export const Home = () => {
 
   const typesAccept = ['image/png', 'image/jpg', 'image/jpeg']
 
-  function adicionaInput() {
+  function adicionaInput(name: any) {
     const randomNumber = Math.random()
     const positionX =
       250 + (randomNumber > 0.5 ? randomNumber * 200 : randomNumber * -200)
@@ -79,6 +80,7 @@ export const Home = () => {
 
     const shape = {
       index: index,
+      head: name,
       x: positionX,
       y: positionY,
       width: 180,
@@ -140,6 +142,7 @@ export const Home = () => {
     const csvJson: any[] = []
     for (let i = 1; i < lines.length; i++) {
       const lineColumn = lines[i].split(/,/g)
+      console.log(lineColumn)
       const lineColumnAltered = lineColumn.map((value: any) =>
         value.trim().toLowerCase().replace(/"/g, '')
       )
@@ -176,7 +179,6 @@ export const Home = () => {
     setPreview(file)
     const reader = new FileReader()
     reader.readAsDataURL(file)
-
     reader.onload = () => {
       setPreview(reader.result)
       resetInput()
@@ -188,9 +190,9 @@ export const Home = () => {
   }
 
   function nextPage() {
-    if (jsonClients && page + 10 < jsonClients.length) {
+    if ((jsonClients) && page + 10 <= jsonClients.length) {
       setPage(page + 10)
-    } else if (jsonClients && page + 10 > jsonClients.length) {
+    } else if ((jsonClients) && (page + 10 > jsonClients.length && jsonClients.length >= 10)) {
       setPage(jsonClients?.length)
     }
   }
@@ -212,9 +214,8 @@ export const Home = () => {
       setJsonClients(JSON.parse(csv))
     }
   }, [])
-
   return (
-    <ChakraProvider theme={theme}>
+    <>
       <Flex>
         <ColorModeSwitcher />
       </Flex>
@@ -241,8 +242,7 @@ export const Home = () => {
                   variant="filled"
                   id="models"
                   width="20vw"
-                  defaultValue={[]}
-                  onChange={(e) => {
+                  onChange={(e: any) => {
                     setPreview(e.target.value)
                   }}
                 >
@@ -253,7 +253,6 @@ export const Home = () => {
                           key={model.index}
                           value={model.url}
                           selected
-                          defaultValue={[]}
                           disabled
                           hidden
                           onSelect={() => {
@@ -292,47 +291,11 @@ export const Home = () => {
                 />
               </Box>
               <Box display={'flex'} flexDir={'row'}>
-                <Canvas
-                  shapes={shapes}
-                  setShapes={setShapes}
-                  preview={preview}
-                  setIsDown={setIsDown}
-                  isDown={isDown}
-                />
-                <Box
-                  borderRadius={10}
-                  boxShadow={'dark-lg'}
-                  bgImg={`url(${require('../../assets/background.png')})`}
-                  display={'flex'}
-                  justifyContent={'space-between'}
-                  alignContent={'space-between'}
-                  flexDir={'column'}
-                >
-                  <Box
-                    display={'flex'}
-                    width={window.screen.width / 9}
-                    flexDirection={'column'}
-                  >
-                    <Button
-                      _hover={{ boxShadow: '10px 5px 5px black' }}
-                      colorScheme="teal"
-                      variant="solid"
-                      margin={5}
-                      type="button"
-                      onClick={adicionaInput}
-                    >
-                      Adicionar {window.screen.width < 600 ? '' : 'Campo'}
-                    </Button>
-                    <Button
-                      _hover={{ boxShadow: '10px 5px 5px black' }}
-                      colorScheme="teal"
-                      variant="solid"
-                      margin={5}
-                      type="button"
-                      onClick={removerInput}
-                    >
-                      Remover {window.screen.width < 600 ? '' : 'Campo'}
-                    </Button>
+                <Canvas shapes={shapes} setShapes={setShapes} preview={preview} setIsDown={setIsDown} isDown={isDown} />
+                <Box borderRadius={10} boxShadow={'dark-lg'} bgImg={`url(${require('../../assets/images/background.png')})`} display={'flex'} justifyContent={'space-between'} alignContent={'space-between'} flexDir={'column'} >
+                  <Box display={'flex'} width={screen.width / 9} flexDirection={'column'}>
+                    <Button _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={adicionaInput} >Adicionar  {screen.width < 600 ? '' : 'Campo'}</Button>
+                    <Button _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={removerInput}>Remover {screen.width < 600 ? '' : 'Campo'}</Button>
                   </Box>
                   <Box
                     display={'flex'}
@@ -421,6 +384,11 @@ export const Home = () => {
                 </Box>
               </Box>
             </Box>
+            <Flex marginTop={5} align={'center'} justify={'center'}>
+              <Flex bgImg={`url(${require('../../assets/images/background.png')})`} borderRadius={10} padding={5} gap={6} margin={'auto auto'}>
+                {(jsonClients) ? Object.keys(jsonClients[0]).map(header => <Button key={header} value={header} onClick={(e) => adicionaInput(e.currentTarget.value)} colorScheme='teal' leftIcon={<AiOutlinePlusCircle color={'green'} style={{ fontSize: '1.5em' }} />}>{header}</Button>) : ''}
+              </Flex>
+            </Flex>
           </GridItem>
           <GridItem>
             <Flex
@@ -441,17 +409,8 @@ export const Home = () => {
                   Limpar CSV
                 </Button>
               </Flex>
-              <span>
-                Lista de pessoas para certificar -{' '}
-                {jsonClients?.length ? jsonClients?.length - 1 : 0}
-              </span>
-              <span>
-                Página{' '}
-                {`${Math.floor(page / 10) + 1} de 
-                ${jsonClients?.length
-                    ? Math.floor(jsonClients?.length / 10)
-                    : 1}`}
-              </span>
+              <span>Lista de pessoas para certificar - {(jsonClients?.length) ? jsonClients?.length - 1 : 0}</span>
+              <span>Página {`${Math.ceil(page / 10) + 1} de ${(jsonClients?.length) ? Math.ceil(jsonClients?.length / 10) : 1}`}</span>
               <Box boxShadow={'dark-lg'}>
                 <input
                   ref={ref}
@@ -459,6 +418,7 @@ export const Home = () => {
                   name="CSV"
                   id="CSV"
                   onChange={(e: any) => {
+                    console.log(e.target.files[0])
                     if (
                       ['application/vnd.ms-excel', 'text/csv'].includes(
                         e.target.files[0].type
@@ -527,6 +487,6 @@ export const Home = () => {
           </GridItem>
         </Flex>
       </Grid>
-    </ChakraProvider>
+    </>
   )
 }
