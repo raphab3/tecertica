@@ -46,22 +46,22 @@ export const Home = () => {
   const [models, setModels] = React.useState([
     {
       index: 0,
-      url: require('./assets/images/inicial.png'),
+      url: require('../../assets/images/inicial.png'),
       name: 'selecione um certificado'
     },
     {
       index: 1,
-      url: require('./assets/images/model01.png'),
+      url: require('../../assets/images/model01.png'),
       name: 'modelo 1'
     },
     {
       index: 2,
-      url: require('./assets/images/model02.png'),
+      url: require('../../assets/images/model02.png'),
       name: 'modelo 2'
     },
     {
       index: 3,
-      url: require('./assets/images/model03.png'),
+      url: require('../../assets/images/model03.png'),
       name: 'modelo 3'
     }
   ])
@@ -292,7 +292,7 @@ export const Home = () => {
               </Box>
               <Box display={'flex'} flexDir={'row'}>
                 <Canvas shapes={shapes} setShapes={setShapes} preview={preview} setIsDown={setIsDown} isDown={isDown} />
-                <Box borderRadius={10} boxShadow={'dark-lg'} bgImg={`url(${require('./assets/images/background.png')})`} display={'flex'} justifyContent={'space-between'} alignContent={'space-between'} flexDir={'column'} >
+                <Box borderRadius={10} boxShadow={'dark-lg'} bgImg={`url(${require('../../assets/images/background.png')})`} display={'flex'} justifyContent={'space-between'} alignContent={'space-between'} flexDir={'column'} >
                   <Box display={'flex'} width={screen.width / 9} flexDirection={'column'}>
                     <Button _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={adicionaInput} >Adicionar  {screen.width < 600 ? '' : 'Campo'}</Button>
                     <Button _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={removerInput}>Remover {screen.width < 600 ? '' : 'Campo'}</Button>
@@ -385,7 +385,7 @@ export const Home = () => {
               </Box>
             </Box>
             <Flex marginTop={5} align={'center'} justify={'center'}>
-              <Flex bgImg={`url(${require('./assets/images/background.png')})`} borderRadius={10} padding={5} gap={6} margin={'auto auto'}>
+              <Flex bgImg={`url(${require('../../assets/images/background.png')})`} borderRadius={10} padding={5} gap={6} margin={'auto auto'}>
                 {(jsonClients) ? Object.keys(jsonClients[0]).map(header => <Button key={header} value={header} onClick={(e) => adicionaInput(e.currentTarget.value)} colorScheme='teal' leftIcon={<AiOutlinePlusCircle color={'green'} style={{ fontSize: '1.5em' }} />}>{header}</Button>) : ''}
               </Flex>
             </Flex>

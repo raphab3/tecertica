@@ -5,7 +5,7 @@ export const Canvas = ({
   shapes,
   setShapes,
   preview,
-  setIsDown,
+  setIsDown
 }: any) => {
   const [startX, setStartX] = React.useState(0)
   const [startY, setStartY] = React.useState(0)
