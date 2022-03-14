@@ -16,7 +16,6 @@
     "indent": ["warn", 2],
     "space-before-function-paren": "off",
     "camelcase": "off",
-    "no-extra-semi": "off",
     "no-useless-constructor": "off",
     "newline-after-var": "off",
     "no-empty-function": "off",
