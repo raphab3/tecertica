@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-globals */
 import React, { useEffect, useRef } from 'react'
 import './styles.css'
 
@@ -7,7 +6,6 @@ export const Canvas = ({
   setShapes,
   preview,
   setIsDown,
-  isDown
 }: any) => {
   const [startX, setStartX] = React.useState(0)
   const [startY, setStartY] = React.useState(0)
@@ -27,15 +25,10 @@ export const Canvas = ({
     canvas.height = screen.height / 1.9
     setWIDTH(canvas.width)
     setHEIGHT(canvas.height)
-    // listen for mouse events
     canvas.onmousedown = myDown
     canvas.onmouseup = myUp
     canvas.onmousemove = myMove
-    // an array of objects that define different shapes
-    // define 2 rectangles
-    // call to draw the scene
     draw()
-    // draw a single rect
     function rect(r: any) {
       context.fillStyle = 'green'
       context.lineWidth = r.lineWidth
@@ -44,31 +37,16 @@ export const Canvas = ({
       context.fillText(r.head, r.x, r.y)
       context.fillRect(r.x, r.y, r.width, r.height)
     }
-    // clear the canvas
-    // function clear() {
-    //   context.clearRect(0, 0, WIDTH, HEIGHT)
-    // }
 
-    // function changeColor(){
-
-    // }
-
-    // redraw the scene
     function draw() {
-      // clear()
-      // redraw each shape in the shapes[] array
       for (let i = 0; i < shapes.length; i++) {
         rect(shapes[i])
       }
     }
 
-    // handle mousedown events
     function myDown(e: any) {
-      // tell the browser we're handling this mouse event
-      // get the current mouse position
       const mx = e.clientX - offsetX
       const my = e.clientY - offsetY
-      // test each shape to see if mouse is inside
       setDragok(false)
       for (let i = 0; i < shapes.length; i++) {
         const s = shapes[i]
@@ -80,15 +58,11 @@ export const Canvas = ({
           setShapes(shapesForChanged)
         }
       }
-      // save the current mouse position
       setStartX(mx)
       setStartY(my)
     }
 
-    // handle mouseup events
     function myUp(e: any) {
-      // tell the browser we're handling this mouse event
-      // clear all the dragging flags
       setDragok(false)
       for (let i = 0; i < shapes.length; i++) {
         const shapesForChanged = [...shapes]
@@ -96,22 +70,13 @@ export const Canvas = ({
         setShapes(shapesForChanged)
       }
     }
-    // handle mouse moves
     function myMove(e: any) {
-      // if we're dragging anything...
       if (dragok) {
-        // tell the browser we're handling this mouse event
-        // get the current mouse position
         const mx = e.clientX - offsetX
         const my = e.clientY - offsetY
-        // calculate the distance the mouse has moved
-        // since the last mousemove
         const dx = mx - startX
         const dy = my - startY
 
-        // move each rect that isDragging
-        // by the distance the mouse has moved
-        // since the last mousemove
         for (let i = 0; i < shapes.length; i++) {
           const s = shapes[i]
           if (s.isDragging) {
@@ -129,10 +94,8 @@ export const Canvas = ({
           }
         }
 
-        // redraw the scene with the new rect positions
         draw()
 
-        // reset the starting mouse position for the next mousemove
         setStartX(mx)
         setStartY(my)
       }
