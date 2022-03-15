@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { FiUpload } from 'react-icons/fi'
 import { AiOutlinePlus, AiOutlineLine, AiOutlinePlusCircle } from 'react-icons/ai'
+// import { ToastExample } from './components/Toast'
 import { BsTrash } from 'react-icons/bs'
 import { ColorModeSwitcher } from 'src/ColorModeSwitcher'
 import { Canvas } from 'src/components/Canvas'
@@ -67,26 +68,8 @@ export const Home = () => {
   React.useEffect(() => {
     setPreview(models[0].url)
   }, [])
-  const typesAccept = ['image/png', 'image/jpg', 'image/jpeg']
 
-  function isSelected() {
-    if (shapes.length && isDown !== -1) {
-      const shapesForSelect = shapes.map(shape => {
-        (shape.index === isDown) ? shape.lineWidth = 4 : shape.lineWidth = 0
-        return shape
-      })
-      setShapes(shapesForSelect)
-    } else if (isDown === -1) {
-      const shapesForSelect = shapes.map(shape => {
-        shape.lineWidth = 0
-        return shape
-      })
-      setShapes(shapesForSelect)
-    }
-  }
-  React.useEffect(() => {
-    isSelected()
-  }, [isDown])
+  const typesAccept = ['image/png', 'image/jpg', 'image/jpeg']
 
   function adicionaInput(name: any) {
     const randomNumber = Math.random()
@@ -97,14 +80,14 @@ export const Home = () => {
 
     const shape = {
       index: index,
-      head: name.toUpperCase(),
+      head: name,
       x: positionX,
       y: positionY,
       width: 180,
       height: 20,
       fill: '#61ff04',
       isDragging: false,
-      strokeStyle: 'black',
+      strokeStyle: '#61ff04',
       lineWidth: 0
     }
     setIndex(index + 1)
@@ -144,15 +127,10 @@ export const Home = () => {
   }
 
   function removerInput() {
-    const inputs = shapes.filter(shape => shape.index !== isDown)
-    const newInputs = inputs.map(input => {
-      if (input.index > isDown) {
-        input.index -= 1
-      }
-      return input
-    })
-    setShapes(newInputs)
-    setIndex(index - 1)
+    const inputs = [...shapes]
+
+    inputs.splice(shapes.length - 1, 1)
+    setShapes(inputs)
   }
 
   function processCsvToJson(csv: any) {
@@ -164,6 +142,7 @@ export const Home = () => {
     const csvJson: any[] = []
     for (let i = 1; i < lines.length; i++) {
       const lineColumn = lines[i].split(/,/g)
+      console.log(lineColumn)
       const lineColumnAltered = lineColumn.map((value: any) =>
         value.trim().toLowerCase().replace(/"/g, '')
       )
@@ -407,7 +386,7 @@ export const Home = () => {
             </Box>
             <Flex marginTop={5} align={'center'} justify={'center'}>
               <Flex bgImg={`url(${require('../../assets/images/background.png')})`} borderRadius={10} padding={5} gap={6} margin={'auto auto'}>
-                {(jsonClients?.length) ? Object.keys(jsonClients[0]).map(header => <Button key={header} value={header} onClick={(e) => adicionaInput(e.currentTarget.value)} colorScheme='teal' leftIcon={<AiOutlinePlusCircle color={'green'} style={{ fontSize: '1.5em' }} />}>{header}</Button>) : ''}
+                {(jsonClients) ? Object.keys(jsonClients[0]).map(header => <Button key={header} value={header} onClick={(e) => adicionaInput(e.currentTarget.value)} colorScheme='teal' leftIcon={<AiOutlinePlusCircle color={'green'} style={{ fontSize: '1.5em' }} />}>{header}</Button>) : ''}
               </Flex>
             </Flex>
           </GridItem>
@@ -439,6 +418,7 @@ export const Home = () => {
                   name="CSV"
                   id="CSV"
                   onChange={(e: any) => {
+                    console.log(e.target.files[0])
                     if (
                       ['application/vnd.ms-excel', 'text/csv'].includes(
                         e.target.files[0].type
