@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react'
-import { getFromStorage } from 'src/shared/Providers/Storage.provider'
 import './styles.css'
 
 export const Canvas = ({
@@ -30,21 +29,18 @@ export const Canvas = ({
     canvas.onmouseup = myUp
     canvas.onmousemove = myMove
     draw()
-    function rect(r: any, name: string) {
+    function rect(r: any) {
       context.fillStyle = 'green'
       context.lineWidth = r.lineWidth
       context.strokeStyle = r.strokeStyle
       context.stroke()
-      context.fillText(name, r.x, r.y)
+      context.fillText(r.head, r.x, r.y)
       context.fillRect(r.x, r.y, r.width, r.height)
     }
 
     function draw() {
-      const inputs = getFromStorage('columns')
       for (let i = 0; i < shapes.length; i++) {
-        if (i < inputs.length) {
-          rect(shapes[i], inputs[i])
-        }
+        rect(shapes[i])
       }
     }
 
@@ -66,7 +62,7 @@ export const Canvas = ({
       setStartY(my)
     }
 
-    function myUp() {
+    function myUp(e: any) {
       setDragok(false)
       for (let i = 0; i < shapes.length; i++) {
         const shapesForChanged = [...shapes]
@@ -74,7 +70,6 @@ export const Canvas = ({
         setShapes(shapesForChanged)
       }
     }
-
     function myMove(e: any) {
       if (dragok) {
         const mx = e.clientX - offsetX
@@ -98,6 +93,7 @@ export const Canvas = ({
             }
           }
         }
+
         draw()
 
         setStartX(mx)
@@ -107,6 +103,7 @@ export const Canvas = ({
   }, [screen.width, screen.height, shapes, startX, startY, offsetX, offsetY])
 
   useEffect(() => {
+    console.log('preview', preview)
     if (preview) {
       const stylesCanvas: any = document.getElementById('canvas')
       stylesCanvas.style.backgroundImage = `url(${preview})`
