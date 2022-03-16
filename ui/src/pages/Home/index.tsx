@@ -1,4 +1,5 @@
 import * as React from 'react'
+import './style.css'
 import {
   Box,
   Button,
@@ -10,14 +11,14 @@ import {
   Tbody,
   Td,
   Thead,
-  Tr
+  Tr,
+  useToast
 } from '@chakra-ui/react'
 import { FiUpload } from 'react-icons/fi'
 import { AiOutlinePlus, AiOutlineLine, AiOutlinePlusCircle } from 'react-icons/ai'
 import { BsTrash } from 'react-icons/bs'
 import { ColorModeSwitcher } from 'src/ColorModeSwitcher'
 import { Canvas } from 'src/components/Canvas'
-import { ToastExample } from 'src/components/Toast'
 
 interface Shapes {
   index: number
@@ -64,6 +65,8 @@ export const Home = () => {
       name: 'modelo 3'
     }
   ])
+
+  const toast = useToast()
   React.useEffect(() => {
     setPreview(models[0].url)
   }, [])
@@ -180,6 +183,13 @@ export const Home = () => {
     reader.readAsDataURL(file)
     reader.onload = () => {
       setPreview(reader.result)
+      toast({
+        title: 'Arquivo inserido',
+        description: 'O certificado foi inserido com sucesso',
+        status: 'success',
+        duration: 9000,
+        isClosable: true
+      })
       resetInput()
     }
   }
@@ -273,6 +283,7 @@ export const Home = () => {
               </Box>
               <Box boxShadow={'dark-lg'}>
                 <input
+                  className='input-none'
                   ref={ref}
                   type="file"
                   name="certificate"
@@ -378,7 +389,6 @@ export const Home = () => {
                         }}
                       ></Button>
                     </Box>
-                    <ToastExample active={active} setActive={setActive} />
                   </Box>
                 </Box>
               </Box>
@@ -412,6 +422,7 @@ export const Home = () => {
               <span>Página {`${Math.ceil(page / 10) + 1} de ${(jsonClients?.length) ? Math.ceil(jsonClients?.length / 10) : 1}`}</span>
               <Box boxShadow={'dark-lg'}>
                 <input
+                  className='input-none'
                   ref={ref}
                   type="file"
                   name="CSV"
