@@ -42,6 +42,3 @@ packages/react-devtools-timeline/dist
 .git
 .github
 ../.github/
-.firebase/**
-.firebase/*
-.firebase/
