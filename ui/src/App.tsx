@@ -19,7 +19,7 @@ export const App = () => {
         <Routes>
           <Route path="/dashboard" element={<Home />} />
         </Routes>
-      </BrowserRouter>,
+      </BrowserRouter>
     </ChakraProvider >
   )
 }
