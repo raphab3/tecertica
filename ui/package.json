@@ -5,7 +5,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "ci": "yarn && yarn build",
+    "ci": "cd ui/ && yarn && yarn build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

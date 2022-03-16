@@ -1,10 +1,7 @@
 {
   "hosting": {
     "public": "build",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
+    "predeploy": "cd ui/",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
   }
 }
