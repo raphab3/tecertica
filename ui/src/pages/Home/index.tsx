@@ -70,8 +70,26 @@ export const Home = () => {
   React.useEffect(() => {
     setPreview(models[0].url)
   }, [])
-
   const typesAccept = ['image/png', 'image/jpg', 'image/jpeg']
+
+  function isSelected() {
+    if (shapes.length && isDown !== -1) {
+      const shapesForSelect = shapes.map(shape => {
+        (shape.index === isDown) ? shape.lineWidth = 4 : shape.lineWidth = 0
+        return shape
+      })
+      setShapes(shapesForSelect)
+    } else if (isDown === -1) {
+      const shapesForSelect = shapes.map(shape => {
+        shape.lineWidth = 0
+        return shape
+      })
+      setShapes(shapesForSelect)
+    }
+  }
+  React.useEffect(() => {
+    isSelected()
+  }, [isDown])
 
   function adicionaInput(name: any) {
     const randomNumber = Math.random()
@@ -82,14 +100,14 @@ export const Home = () => {
 
     const shape = {
       index: index,
-      head: name,
+      head: name.toUpperCase(),
       x: positionX,
       y: positionY,
       width: 180,
       height: 20,
       fill: '#61ff04',
       isDragging: false,
-      strokeStyle: '#61ff04',
+      strokeStyle: 'black',
       lineWidth: 0
     }
     setIndex(index + 1)
@@ -129,10 +147,15 @@ export const Home = () => {
   }
 
   function removerInput() {
-    const inputs = [...shapes]
-
-    inputs.splice(shapes.length - 1, 1)
-    setShapes(inputs)
+    const inputs = shapes.filter(shape => shape.index !== isDown)
+    const newInputs = inputs.map(input => {
+      if (input.index > isDown) {
+        input.index -= 1
+      }
+      return input
+    })
+    setShapes(newInputs)
+    setIndex(index - 1)
   }
 
   function processCsvToJson(csv: any) {
@@ -144,7 +167,6 @@ export const Home = () => {
     const csvJson: any[] = []
     for (let i = 1; i < lines.length; i++) {
       const lineColumn = lines[i].split(/,/g)
-      console.log(lineColumn)
       const lineColumnAltered = lineColumn.map((value: any) =>
         value.trim().toLowerCase().replace(/"/g, '')
       )
@@ -428,7 +450,6 @@ export const Home = () => {
                   name="CSV"
                   id="CSV"
                   onChange={(e: any) => {
-                    console.log(e.target.files[0])
                     if (
                       ['application/vnd.ms-excel', 'text/csv'].includes(
                         e.target.files[0].type

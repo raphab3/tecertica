@@ -5,7 +5,8 @@ export const Canvas = ({
   shapes,
   setShapes,
   preview,
-  setIsDown
+  setIsDown,
+  isDown
 }: any) => {
   const [startX, setStartX] = React.useState(0)
   const [startY, setStartY] = React.useState(0)
@@ -29,13 +30,20 @@ export const Canvas = ({
     canvas.onmouseup = myUp
     canvas.onmousemove = myMove
     draw()
+
     function rect(r: any) {
+      context.beginPath()
       context.fillStyle = 'green'
-      context.lineWidth = r.lineWidth
-      context.strokeStyle = r.strokeStyle
-      context.stroke()
-      context.fillText(r.head, r.x, r.y)
+      if (r.lineWidth) {
+        context.lineWidth = r.lineWidth
+        context.strokeStyle = r.strokeStyle
+        context.strokeRect(r.x, r.y, r.width, r.height)
+        context.fillText(r.head, r.x, r.y - 4)
+      } else {
+        context.fillText(r.head, r.x, r.y)
+      }
       context.fillRect(r.x, r.y, r.width, r.height)
+      context.closePath()
     }
 
     function draw() {
@@ -48,6 +56,11 @@ export const Canvas = ({
       const mx = e.clientX - offsetX
       const my = e.clientY - offsetY
       setDragok(false)
+      const s: any = shapes[isDown]
+      console.log(s)
+      if (s && ((mx < s.x && mx < s.x + s.width) || (mx > s.x && mx > s.x + s.width) || (my > s.y && my > s.y + s.height) || (my < s.y && my < s.y + s.height))) {
+        setIsDown(-1)
+      }
       for (let i = 0; i < shapes.length; i++) {
         const s = shapes[i]
         if (mx > s.x && mx < s.x + s.width && my > s.y && my < s.y + s.height) {
@@ -100,10 +113,9 @@ export const Canvas = ({
         setStartY(my)
       }
     }
-  }, [screen.width, screen.height, shapes, startX, startY, offsetX, offsetY])
+  }, [screen.width, isDown, screen.height, shapes, startX, startY, offsetX, offsetY])
 
   useEffect(() => {
-    console.log('preview', preview)
     if (preview) {
       const stylesCanvas: any = document.getElementById('canvas')
       stylesCanvas.style.backgroundImage = `url(${preview})`
