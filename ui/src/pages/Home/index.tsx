@@ -64,11 +64,31 @@ export const Home = () => {
   ])
 
   const toast = useToast()
+
   React.useEffect(() => {
     setPreview(models[0].url)
   }, [])
 
   const typesAccept = ['image/png', 'image/jpg', 'image/jpeg']
+
+  function isSelected() {
+    if (shapes.length && isDown !== -1) {
+      const shapesForSelect = shapes.map(shape => {
+        (shape.index === isDown) ? shape.lineWidth = 4 : shape.lineWidth = 0
+        return shape
+      })
+      setShapes(shapesForSelect)
+    } else if (isDown === -1) {
+      const shapesForSelect = shapes.map(shape => {
+        shape.lineWidth = 0
+        return shape
+      })
+      setShapes(shapesForSelect)
+    }
+  }
+  React.useEffect(() => {
+    isSelected()
+  }, [isDown])
 
   function adicionaInput(name: any) {
     const randomNumber = Math.random()
@@ -86,7 +106,7 @@ export const Home = () => {
       height: 20,
       fill: '#61ff04',
       isDragging: false,
-      strokeStyle: '#61ff04',
+      strokeStyle: 'black',
       lineWidth: 0
     }
     setIndex(index + 1)
