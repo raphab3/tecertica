@@ -17,7 +17,6 @@ import {
 import { FiUpload } from 'react-icons/fi'
 import { AiOutlinePlus, AiOutlineLine, AiOutlinePlusCircle } from 'react-icons/ai'
 import { BsTrash } from 'react-icons/bs'
-import { ColorModeSwitcher } from 'src/ColorModeSwitcher'
 import { Canvas } from 'src/components/Canvas'
 
 interface Shapes {
@@ -223,12 +222,9 @@ export const Home = () => {
   }, [])
   return (
     <>
-      <div className='content'>
-        <Flex>
-          <ColorModeSwitcher />
-        </Flex>
-        <Grid padding={10} templateRows="1fr 1fr" templateColumns=" 1fr 1fr">
-          <Flex position={'absolute'} w="100vw" h="100vh" bg={'light'}>
+      <div className='content' >
+        <Grid padding={10} templateRows="1fr 1fr" templateColumns=" 1fr 1fr" bg='dark'>
+          <Flex position={'absolute'} w="100vw" h="100vh" >
             <GridItem>
               <Box flexDirection={'column'}>
                 <Box
@@ -303,7 +299,6 @@ export const Home = () => {
                   <Canvas shapes={shapes} setShapes={setShapes} preview={preview} setIsDown={setIsDown} isDown={isDown} />
                   <Box borderRadius={10} boxShadow={'dark-lg'} bgImg={`url(${require('../../assets/images/background.png')})`} display={'flex'} justifyContent={'space-between'} alignContent={'space-between'} flexDir={'column'} >
                     <Box display={'flex'} width={screen.width / 9} flexDirection={'column'}>
-                      <Button _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={adicionaInput} >Adicionar  {screen.width < 600 ? '' : 'Campo'}</Button>
                       <Button _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={removerInput}>Remover {screen.width < 600 ? '' : 'Campo'}</Button>
                     </Box>
                     <Box

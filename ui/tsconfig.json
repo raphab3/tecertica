@@ -16,6 +16,7 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": "./",
+    "rootDir": "./src",
     "paths": {
       "@assets": ["src/assets/*"]
     },

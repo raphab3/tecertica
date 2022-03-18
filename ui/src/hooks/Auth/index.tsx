@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { getFromStorage } from 'src/shared/Providers/Storage.provider'
+import { getFromStorage } from 'src/shared/Providers/Storage/Storage.provider'
 
 type AuthType = {
   token: string
