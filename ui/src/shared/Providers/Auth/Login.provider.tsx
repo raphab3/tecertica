@@ -36,7 +36,6 @@ export default function Login() {
     e.preventDefault()
     try {
       const res = await signInWithPopup(auth, googleProvider)
-
       const user = res.user
       const q = query(collection(db, 'users'), where('uid', '==', user.uid))
       const docs = await getDocs(q)
@@ -96,21 +95,7 @@ export default function Login() {
                 <i className="fa fa-google"></i> Google
               </button>
             </div>
-            {/* <div className="last">
-              <div className="facebook">
-                <button>
-                  <i className="fa fa-facebook"></i> Facebook
-                </button>
-              </div>
-              <div className="twitter">
-                {' '}
-                <button >
-                  <i className="fa fa-twitter"></i> Twitter
-                </button>
-              </div>
-            </div> */}
           </form>
-
         </div>
       </div>
     </>

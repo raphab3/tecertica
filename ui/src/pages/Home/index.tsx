@@ -19,8 +19,6 @@ import { AiOutlinePlus, AiOutlineLine, AiOutlinePlusCircle } from 'react-icons/a
 import { BsTrash } from 'react-icons/bs'
 import { ColorModeSwitcher } from 'src/ColorModeSwitcher'
 import { Canvas } from 'src/components/Canvas'
-import { getFromStorage } from 'src/shared/Providers/Storage.provider'
-import { useAuth } from 'src/hooks/Auth'
 
 interface Shapes {
   index: number
@@ -36,8 +34,6 @@ interface Shapes {
 
 export const Home = () => {
   const [page, setPage] = React.useState(0)
-  const [inputAdded, setInputAdded] = React.useState<string[]>([])
-  const [headers, setHeaders] = React.useState(0)
   const [jsonClients, setJsonClients] = React.useState<any[]>()
   const [shapes, setShapes] = React.useState<Shapes[]>([])
   const [preview, setPreview] = React.useState<any>()
@@ -67,22 +63,6 @@ export const Home = () => {
       name: 'modelo 3'
     }
   ])
-
-  const { state, setState } = useAuth()
-
-  // React.useEffect(() => {
-  //   checkTokenStorage()
-  // }, [])
-
-  // const checkTokenStorage = () => {
-  //   const token = getFromStorage('token')
-  //   if (token) {
-  //     setState({
-  //       ...state,
-  //       token
-  //     })
-  //   }
-  // }
 
   const toast = useToast()
   React.useEffect(() => {
@@ -413,9 +393,11 @@ export const Home = () => {
                 </Box>
               </Box>
               <Flex marginTop={5} align={'center'} justify={'center'}>
-                <Flex bgImg={`url(${require('../../assets/images/background.png')})`} borderRadius={10} padding={5} gap={6} margin={'auto auto'}>
-                  {(jsonClients?.length) ? Object.keys(jsonClients[0]).map(header => <Button key={header} value={header} onClick={(e) => adicionaInput(e.currentTarget.value)} colorScheme='teal' leftIcon={<AiOutlinePlusCircle color={'green'} style={{ fontSize: '1.5em' }} />}>{header}</Button>) : ''}
-                </Flex>
+                {(jsonClients?.length)
+                  ? <Flex bgImg={`url(${require('../../assets/images/background.png')})`} borderRadius={10} padding={5} gap={6} margin={'auto auto'}>
+                    {Object.keys(jsonClients[0]).map(header => <Button key={header} value={header} onClick={(e) => adicionaInput(e.currentTarget.value)} colorScheme='teal' leftIcon={<AiOutlinePlusCircle color={'green'} style={{ fontSize: '1.5em' }} />}>{header}</Button>)}
+                  </Flex>
+                  : ''}
               </Flex>
             </GridItem>
             <GridItem>

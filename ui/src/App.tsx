@@ -9,8 +9,9 @@ import { useEffect } from 'react'
 
 export const App = () => {
   const { state, setState } = useAuth()
-  const tokenStorage = getFromStorage('token')
-  if (!state.token && !tokenStorage) {
+  const token = getFromStorage('token')
+
+  if (!state.token && !token) {
     return <Login />
   }
 
@@ -19,7 +20,6 @@ export const App = () => {
   }, [])
 
   const checkTokenStorage = () => {
-    const token = getFromStorage('token')
     if (token) {
       setState({
         ...state,

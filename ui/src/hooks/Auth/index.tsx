@@ -2,8 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { getFromStorage } from 'src/shared/Providers/Storage.provider'
 
 type AuthType = {
-  token: string,
-  authenticated: boolean
+  token: string
 }
 
 type PropsAuthContext = {
@@ -13,8 +12,7 @@ type PropsAuthContext = {
 
 const DEFAULT_VALUE = {
   state: {
-    token: '',
-    authenticated: false
+    token: ''
   },
   setState: () => { }
 }
@@ -23,10 +21,6 @@ const AuthContext = createContext<PropsAuthContext>(DEFAULT_VALUE)
 
 export default function AuthContextProvider({ children }: any) {
   const [state, setState] = useState(DEFAULT_VALUE.state)
-
-  useEffect(() => {
-    console.log('toekn updated: ', state.token)
-  }, [state.token])
 
   return (
     <AuthContext.Provider
