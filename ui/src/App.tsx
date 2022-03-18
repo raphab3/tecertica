@@ -1,5 +1,5 @@
 
-import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import { ChakraProvider, theme } from '@chakra-ui/react'
 import { Home } from './pages/Home'
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom'
 import Login from './shared/Providers/Auth/Login.provider'
@@ -28,15 +28,6 @@ export const App = () => {
       })
     }
   }
-
-  const theme = extendTheme({
-    colors: {
-      brand: {
-        black: '#000000',
-        white: '#ffffff'
-      }
-    }
-  })
 
   return (
     <>
