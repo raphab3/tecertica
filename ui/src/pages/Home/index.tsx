@@ -64,11 +64,31 @@ export const Home = () => {
   ])
 
   const toast = useToast()
+
   React.useEffect(() => {
     setPreview(models[0].url)
   }, [])
 
   const typesAccept = ['image/png', 'image/jpg', 'image/jpeg']
+
+  function isSelected() {
+    if (shapes.length && isDown !== -1) {
+      const shapesForSelect = shapes.map(shape => {
+        (shape.index === isDown) ? shape.lineWidth = 4 : shape.lineWidth = 0
+        return shape
+      })
+      setShapes(shapesForSelect)
+    } else if (isDown === -1) {
+      const shapesForSelect = shapes.map(shape => {
+        shape.lineWidth = 0
+        return shape
+      })
+      setShapes(shapesForSelect)
+    }
+  }
+  React.useEffect(() => {
+    isSelected()
+  }, [isDown])
 
   function adicionaInput(name: any) {
     const randomNumber = Math.random()
@@ -84,9 +104,9 @@ export const Home = () => {
       y: positionY,
       width: 180,
       height: 20,
-      fill: '#61ff04',
+      fill: '#312e8157',
       isDragging: false,
-      strokeStyle: '#61ff04',
+      strokeStyle: '#E7AA32',
       lineWidth: 0
     }
     setIndex(index + 1)
@@ -126,10 +146,15 @@ export const Home = () => {
   }
 
   function removerInput() {
-    const inputs = [...shapes]
-
-    inputs.splice(shapes.length - 1, 1)
-    setShapes(inputs)
+    const inputs = shapes.filter(shape => shape.index !== isDown)
+    const newInputs = inputs.map(input => {
+      if (input.index > isDown) {
+        input.index -= 1
+      }
+      return input
+    })
+    setShapes(newInputs)
+    setIndex(index - 1)
   }
 
   function processCsvToJson(csv: any) {
