@@ -1,0 +1,6 @@
+.side-bar {
+  background: #000000;
+  height: 100vh;
+  width: 80px;
+  position: fixed;
+}
