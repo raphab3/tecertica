@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './style.css'
-import { saveToStorage } from 'src/shared/Providers/Storage.provider'
+import { saveToStorage } from 'src/shared/Providers/Storage/Storage.provider'
 import { useAuth } from 'src/hooks/Auth'
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore'

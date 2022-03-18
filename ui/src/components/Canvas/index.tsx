@@ -33,7 +33,7 @@ export const Canvas = ({
 
     function rect(r: any) {
       context.beginPath()
-      context.fillStyle = 'green'
+      context.fillStyle = r.fill
       if (r.lineWidth) {
         context.lineWidth = r.lineWidth
         context.strokeStyle = r.strokeStyle
@@ -69,6 +69,7 @@ export const Canvas = ({
           const shapesForChanged = [...shapes]
           shapesForChanged[i].isDragging = true
           setShapes(shapesForChanged)
+          console.log(s)
         }
       }
       setStartX(mx)

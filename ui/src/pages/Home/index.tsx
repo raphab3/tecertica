@@ -17,7 +17,6 @@ import {
 import { FiUpload } from 'react-icons/fi'
 import { AiOutlinePlus, AiOutlineLine, AiOutlinePlusCircle } from 'react-icons/ai'
 import { BsTrash } from 'react-icons/bs'
-import { ColorModeSwitcher } from 'src/ColorModeSwitcher'
 import { Canvas } from 'src/components/Canvas'
 
 interface Shapes {
@@ -65,11 +64,31 @@ export const Home = () => {
   ])
 
   const toast = useToast()
+
   React.useEffect(() => {
     setPreview(models[0].url)
   }, [])
 
   const typesAccept = ['image/png', 'image/jpg', 'image/jpeg']
+
+  function isSelected() {
+    if (shapes.length && isDown !== -1) {
+      const shapesForSelect = shapes.map(shape => {
+        (shape.index === isDown) ? shape.lineWidth = 4 : shape.lineWidth = 0
+        return shape
+      })
+      setShapes(shapesForSelect)
+    } else if (isDown === -1) {
+      const shapesForSelect = shapes.map(shape => {
+        shape.lineWidth = 0
+        return shape
+      })
+      setShapes(shapesForSelect)
+    }
+  }
+  React.useEffect(() => {
+    isSelected()
+  }, [isDown])
 
   function adicionaInput(name: any) {
     const randomNumber = Math.random()
@@ -85,9 +104,9 @@ export const Home = () => {
       y: positionY,
       width: 180,
       height: 20,
-      fill: '#61ff04',
+      fill: '#312e8157',
       isDragging: false,
-      strokeStyle: '#61ff04',
+      strokeStyle: '#E7AA32',
       lineWidth: 0
     }
     setIndex(index + 1)
@@ -127,10 +146,15 @@ export const Home = () => {
   }
 
   function removerInput() {
-    const inputs = [...shapes]
-
-    inputs.splice(shapes.length - 1, 1)
-    setShapes(inputs)
+    const inputs = shapes.filter(shape => shape.index !== isDown)
+    const newInputs = inputs.map(input => {
+      if (input.index > isDown) {
+        input.index -= 1
+      }
+      return input
+    })
+    setShapes(newInputs)
+    setIndex(index - 1)
   }
 
   function processCsvToJson(csv: any) {
@@ -223,12 +247,9 @@ export const Home = () => {
   }, [])
   return (
     <>
-      <div className='content'>
-        <Flex>
-          <ColorModeSwitcher />
-        </Flex>
-        <Grid padding={10} templateRows="1fr 1fr" templateColumns=" 1fr 1fr">
-          <Flex position={'absolute'} w="100vw" h="100vh" bg={'light'}>
+      <div className='content' >
+        <Grid padding={10} templateRows="1fr 1fr" templateColumns=" 1fr 1fr" bg='dark'>
+          <Flex position={'absolute'} w="100vw" h="100vh" >
             <GridItem>
               <Box flexDirection={'column'}>
                 <Box
@@ -303,7 +324,6 @@ export const Home = () => {
                   <Canvas shapes={shapes} setShapes={setShapes} preview={preview} setIsDown={setIsDown} isDown={isDown} />
                   <Box borderRadius={10} boxShadow={'dark-lg'} bgImg={`url(${require('../../assets/images/background.png')})`} display={'flex'} justifyContent={'space-between'} alignContent={'space-between'} flexDir={'column'} >
                     <Box display={'flex'} width={screen.width / 9} flexDirection={'column'}>
-                      <Button _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={adicionaInput} >Adicionar  {screen.width < 600 ? '' : 'Campo'}</Button>
                       <Button _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={removerInput}>Remover {screen.width < 600 ? '' : 'Campo'}</Button>
                     </Box>
                     <Box

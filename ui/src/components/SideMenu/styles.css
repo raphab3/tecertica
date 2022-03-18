@@ -1,6 +1,29 @@
 .side-bar {
-  background: #000000;
+  background: #312e81;
   height: 100vh;
   width: 80px;
   position: fixed;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.side-bar .sidebar-logo {
+  margin-top: 5px;
+  padding: 3px;
+}
+
+.side-bar .sidebar-divider {
+  width: 55px;
+  height: 0.6px;
+  background: #707070;
+  margin: 10px 0;
+}
+
+.side-bar .sidebar-logout {
+  margin-bottom: 5px;
+  cursor: pointer;
+  color: aliceblue !important;
 }
