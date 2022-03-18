@@ -1,3 +1,7 @@
 .input-none {
   display: none;
 }
+
+.content {
+  margin-left: 200px;
+}

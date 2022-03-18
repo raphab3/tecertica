@@ -5,11 +5,16 @@ import { App } from './App'
 import * as serviceWorker from './serviceWorker'
 import './config/firebase.config'
 import './global.css'
+import { SideMenu } from './components/SideMenu'
+import AuthContextProvider from './hooks/Auth'
 
 ReactDOM.render(
   <React.StrictMode>
     <ColorModeScript />
-    <App />
+    <AuthContextProvider>
+      <SideMenu />
+      <App />
+    </AuthContextProvider>
   </React.StrictMode>
   ,
   document.getElementById('root')
