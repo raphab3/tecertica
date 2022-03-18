@@ -104,9 +104,9 @@ export const Home = () => {
       y: positionY,
       width: 180,
       height: 20,
-      fill: '#61ff04',
+      fill: '#312e8157',
       isDragging: false,
-      strokeStyle: 'black',
+      strokeStyle: '#E7AA32',
       lineWidth: 0
     }
     setIndex(index + 1)
@@ -146,10 +146,15 @@ export const Home = () => {
   }
 
   function removerInput() {
-    const inputs = [...shapes]
-
-    inputs.splice(shapes.length - 1, 1)
-    setShapes(inputs)
+    const inputs = shapes.filter(shape => shape.index !== isDown)
+    const newInputs = inputs.map(input => {
+      if (input.index > isDown) {
+        input.index -= 1
+      }
+      return input
+    })
+    setShapes(newInputs)
+    setIndex(index - 1)
   }
 
   function processCsvToJson(csv: any) {
