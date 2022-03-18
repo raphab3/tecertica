@@ -12,7 +12,7 @@ ReactDOM.render(
   <React.StrictMode>
     <ColorModeScript />
     <AuthContextProvider>
-      <SideMenu />
+
       <App />
     </AuthContextProvider>
   </React.StrictMode>

@@ -1,8 +1,11 @@
 import React from 'react'
 import './styles.css'
-import { Flex } from '@chakra-ui/react'
+import { Flex, Image, scaleFadeConfig } from '@chakra-ui/react'
 import Logout from 'src/shared/Providers/Auth/Logout.provider'
 import { useAuth } from 'src/hooks/Auth'
+import { ColorModeSwitcher } from 'src/ColorModeSwitcher'
+import logoImg from '../../assets/images/logotipo.svg'
+
 export const SideMenu = () => {
   const { state } = useAuth()
 
@@ -10,18 +13,27 @@ export const SideMenu = () => {
     <>
       {state.token
         ? (
-          <div className="side-bar" >
-            <Flex align={'center'} direction={'column'} alignSelf={'flex-end'}
-            >
-              <a className="flex items-center justify-center w-16 h-16 mt-auto bg-gray-800 hover:bg-gray-700 hover:text-gray-300" href="#">
-                <Logout />
-              </a>
+          <div className="side-bar"
+            style={{ maxWidth: 60 }}>
+            <Flex direction={'column'} alignItems={'center'}>
+              <div className='sidebar-logo'>
+                <Image src={logoImg} />
+              </div>
+              <span className='sidebar-divider'></span>
+
+              <Flex>
+                <ColorModeSwitcher border={0} margin={0} />
+              </Flex>
 
             </Flex>
 
+            <div className='sidebar-logout'>
+              <Logout />
+            </div>
           </div>
         )
-        : ''}
+        : ''
+      }
 
     </>
   )
