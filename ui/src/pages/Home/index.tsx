@@ -18,9 +18,11 @@ import { FiUpload } from 'react-icons/fi'
 import { AiOutlinePlus, AiOutlineLine, AiOutlinePlusCircle } from 'react-icons/ai'
 import { BsTrash } from 'react-icons/bs'
 import { Canvas } from 'src/components/Canvas'
+import { PreviewCertificate } from 'src/components/PreviewCertificate'
 
 interface Shapes {
   index: number
+  head: string
   x: number
   y: number
   width: number
@@ -109,6 +111,7 @@ export const Home = () => {
       strokeStyle: '#E7AA32',
       lineWidth: 0
     }
+
     setIndex(index + 1)
     setShapes([...shapes, shape])
   }
@@ -166,7 +169,6 @@ export const Home = () => {
     const csvJson: any[] = []
     for (let i = 1; i < lines.length; i++) {
       const lineColumn = lines[i].split(/,/g)
-      console.log(lineColumn)
       const lineColumnAltered = lineColumn.map((value: any) =>
         value.trim().toLowerCase().replace(/"/g, '')
       )
@@ -324,6 +326,7 @@ export const Home = () => {
                   <Canvas shapes={shapes} setShapes={setShapes} preview={preview} setIsDown={setIsDown} isDown={isDown} />
                   <Box borderRadius={10} boxShadow={'dark-lg'} bgImg={`url(${require('../../assets/images/background.png')})`} display={'flex'} justifyContent={'space-between'} alignContent={'space-between'} flexDir={'column'} >
                     <Box display={'flex'} width={screen.width / 9} flexDirection={'column'}>
+                      <PreviewCertificate imgPreview={preview} shapes={shapes} isDown={isDown} jsonClients={jsonClients}/>
                       <Button _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={removerInput}>Remover {screen.width < 600 ? '' : 'Campo'}</Button>
                     </Box>
                     <Box
@@ -449,7 +452,6 @@ export const Home = () => {
                     name="CSV"
                     id="CSV"
                     onChange={(e: any) => {
-                      console.log(e.target.files[0])
                       if (
                         ['application/vnd.ms-excel', 'text/csv'].includes(
                           e.target.files[0].type
