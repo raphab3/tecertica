@@ -1,3 +1,4 @@
+/* eslint-disable func-call-spacing */
 import React from 'react'
 
 import { Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, FormLabel, Input, InputGroup, InputLeftAddon, InputRightAddon, Select, Stack, Textarea, useDisclosure } from '@chakra-ui/react'
@@ -9,6 +10,7 @@ export const PreviewCertificate = ({ shapes, imgPreview, jsonClients }: any) => 
   const [textField, setTextField] = React.useState('')
   const [textsArray, setTextsArray] = React.useState<any[]>([])
   const [step, setStep] = React.useState(0)
+  console.log(textsArray)
   return (
     <>
       <Button title={!(shapes.length) ? 'Adicione pelo menos um input' : ''} isDisabled={!(shapes.length)} _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={onOpen}>Pré-visualização</Button>
@@ -49,14 +51,19 @@ export const PreviewCertificate = ({ shapes, imgPreview, jsonClients }: any) => 
                             placeholder='Ex: CPF da pessoa, nome da pessoa...'
                             onChange={(e) => setTextField(e.currentTarget.value)}
                           />
-                          <Button disabled={true} margin={5} onClick={() => {
-                            setTextsArray([...textsArray, {
-                              head: shape.head.toUpperCase(),
-                              value: textField
-                            }])
-                            setStep(step + 1)
-                            setTextField('')
-                          }}>adicionar</Button>
+                          <Button disabled={true} margin={5}>adicionar</Button>
+
+                          {index < step
+                            ? <Button colorScheme={'red'} onClick={() => {
+                              setStep(index)
+                              const fields: any = [...textsArray] as any
+                              fields[index].isEditing = true
+                              setTextField(fields[index].value)
+                              setTextsArray([...fields])
+                            }
+                            }>Editar</Button>
+                            : ''
+                          }
                         </Box>
                       </>
                     )
@@ -68,16 +75,25 @@ export const PreviewCertificate = ({ shapes, imgPreview, jsonClients }: any) => 
                           <Input
                             ref={firstField}
                             placeholder='Ex: CPF da pessoa, nome da pessoa...'
-                            value={textField}
+                            value={(textsArray[index]?.isEditing) ? textField : textsArray[index]?.value}
                             onChange={(e) => setTextField(e.currentTarget.value)}
                           />
                           <Button colorScheme={'green'} margin={5} onClick={() => {
-                            setTextsArray([...textsArray, {
-                              header: shape.head.toUpperCase(),
-                              value: textField
-                            }])
-                            setStep(step + 1)
-                            setTextField('')
+                            if (textsArray[index]) {
+                              const fields: any = [...textsArray] as any
+                              fields[index].value = textField
+                              fields[index].isEditing = false
+                              setStep(textsArray.length)
+                              setTextsArray([...fields])
+                            } else {
+                              setTextsArray([...textsArray, {
+                                header: shape.head.toUpperCase(),
+                                index: index,
+                                isEditing: false,
+                                value: textField
+                              }])
+                              setStep(step + 1)
+                            }
                           }}>adicionar</Button>
                         </Box>
                       </>
