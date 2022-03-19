@@ -11,7 +11,7 @@ export const PreviewCertificate = ({ shapes, imgPreview, jsonClients }: any) => 
   const [step, setStep] = React.useState(0)
   return (
     <>
-      <Button isDisabled={!(shapes.length)} _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={onOpen}>Pré-visualização</Button>
+      <Button title={!(shapes.length) ? 'Adicione pelo menos um input' : ''} isDisabled={!(shapes.length)} _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={onOpen}>Pré-visualização</Button>
       <Drawer
         isOpen={isOpen}
         placement='right'
@@ -33,13 +33,16 @@ export const PreviewCertificate = ({ shapes, imgPreview, jsonClients }: any) => 
 
           <DrawerBody>
             <Stack spacing='24px'>
+              <Box>
+                * Se não quiser adicionar um campo, remova-o na página anterior
+              </Box>
               {(jsonClients?.length)
                 ? shapes.map((shape: any, index: any) => {
                   if (step !== index) {
                     return (
                       <>
                         <Box style={{ transform: 'scale(0.85)', color: 'gray', cursor: 'not-allowed' }}>
-                          <FormLabel htmlFor='username'>Insira o conteúdo do {shape.head.toUpperCase()}</FormLabel>
+                          <FormLabel htmlFor='username'>Insira o {shape.head.toUpperCase()}</FormLabel>
                           <Input
                             disabled={true}
                             ref={firstField}
@@ -61,7 +64,7 @@ export const PreviewCertificate = ({ shapes, imgPreview, jsonClients }: any) => 
                     return (
                       <>
                         <Box>
-                          <FormLabel htmlFor='username'>Insira o conteúdo do {shape.head.toUpperCase()}</FormLabel>
+                          <FormLabel htmlFor='username'>Insira o {shape.head.toUpperCase()}</FormLabel>
                           <Input
                             ref={firstField}
                             placeholder='Ex: CPF da pessoa, nome da pessoa...'

@@ -17,7 +17,7 @@ export const ModalPreview = ({ imgPreview, isDown, shapes, isDisabled, textsArra
   console.log(imgPreview.includes(models[1]))
   return (
     <>
-      <Button isDisabled={isDisabled} colorScheme={(isDisabled) ? 'gray' : 'green'} onClick={onOpen}>Visualizar</Button>
+      <Button title={(isDisabled) ? 'É necessário preencher todos os campos' : ''} isDisabled={isDisabled} colorScheme={(isDisabled) ? 'gray' : 'green'} onClick={onOpen}>Visualizar</Button>
       <Modal onClose={onClose} size={size} isOpen={isOpen}>
         <ModalOverlay />
         <ModalContent>
