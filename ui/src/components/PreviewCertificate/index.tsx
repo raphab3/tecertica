@@ -11,7 +11,7 @@ export const PreviewCertificate = ({ shapes, imgPreview, jsonClients }: any) => 
   const [step, setStep] = React.useState(0)
   return (
     <>
-      <Button _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={onOpen}>Pré-visualização</Button>
+      <Button isDisabled={!(shapes.length)} _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={onOpen}>Pré-visualização</Button>
       <Drawer
         isOpen={isOpen}
         placement='right'
