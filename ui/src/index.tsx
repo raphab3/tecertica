@@ -12,7 +12,6 @@ ReactDOM.render(
   <React.StrictMode>
     <ColorModeScript />
     <AuthContextProvider>
-
       <App />
     </AuthContextProvider>
   </React.StrictMode>
