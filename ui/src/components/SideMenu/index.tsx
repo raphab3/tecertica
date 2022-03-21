@@ -5,6 +5,7 @@ import Logout from 'src/shared/Providers/Auth/Logout.provider'
 import { useAuth } from 'src/hooks/Auth'
 import { ColorModeSwitcher } from 'src/ColorModeSwitcher'
 import logoImg from '../../assets/images/logotipo.svg'
+import { PreviewCertificate } from '../PreviewCertificate'
 
 export const SideMenu = () => {
   const { state } = useAuth()

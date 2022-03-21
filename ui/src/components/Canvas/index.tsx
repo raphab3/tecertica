@@ -22,8 +22,8 @@ export const Canvas = ({
     const BB = canvas.getBoundingClientRect()
     setOffsetX(BB.left)
     setOffsetY(BB.top)
-    canvas.width = screen.width / 2.5
-    canvas.height = screen.height / 1.9
+    canvas.width = 768
+    canvas.height = 568
     setWIDTH(canvas.width)
     setHEIGHT(canvas.height)
     canvas.onmousedown = myDown
@@ -43,6 +43,7 @@ export const Canvas = ({
         context.fillText(r.head, r.x, r.y)
       }
       context.fillRect(r.x, r.y, r.width, r.height)
+      context.imageSmoothingEnabled = true
       context.closePath()
     }
 
@@ -114,20 +115,20 @@ export const Canvas = ({
         setStartY(my)
       }
     }
-  }, [screen.width, isDown, screen.height, shapes, startX, startY, offsetX, offsetY])
+  }, [isDown, shapes, startX, startY, offsetX, offsetY])
 
   useEffect(() => {
     if (preview) {
       const stylesCanvas: any = document.getElementById('canvas')
       stylesCanvas.style.backgroundImage = `url(${preview})`
-      stylesCanvas.style.width = WIDTH
-      stylesCanvas.style.height = HEIGHT
+      stylesCanvas.style.width = 768
+      stylesCanvas.style.height = 568
     }
-  }, [preview, WIDTH, HEIGHT])
+  }, [preview])
 
   return (
     <>
-      <canvas id="canvas" ref={canvasRef} />
+      <canvas style={{ border: 0 }} id="canvas" ref={canvasRef} />
     </>
   )
 }
