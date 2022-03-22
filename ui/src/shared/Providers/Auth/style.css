@@ -2,6 +2,8 @@
 
 .container {
   background-color: #312e81;
+  height: 100vh;
+  /* color: aliceblue; */
 }
 
 .container .login-logo {

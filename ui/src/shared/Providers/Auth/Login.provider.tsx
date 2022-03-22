@@ -5,7 +5,7 @@ import { useAuth } from 'src/hooks/Auth'
 import { confirmPasswordReset, createUserWithEmailAndPassword, GithubAuthProvider, GoogleAuthProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, verifyPasswordResetCode } from 'firebase/auth'
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore'
 import { auth, db } from 'src/config/firebase.config'
-import { Box, Button, ChakraProvider, Checkbox, Divider, FormControl, FormLabel, Heading, HStack, Image, Input, Stack, theme, useBreakpointValue, Text, useColorModeValue, ButtonGroup, VisuallyHidden, Container } from '@chakra-ui/react'
+import { Box, Button, ChakraProvider, Checkbox, Divider, FormControl, FormLabel, Heading, HStack, Image, Input, Stack, useBreakpointValue, Text, useColorModeValue, ButtonGroup, VisuallyHidden, Container, extendTheme } from '@chakra-ui/react'
 import logoImgFundoEscuro from '../../../assets/images/logo-fundo-escuro.svg'
 import { GitHubIcon, GoogleIcon } from 'src/shared/utils/icons/googleIcons'
 import { FaArrowAltCircleLeft, FaBackspace, FaBackward, FaFastBackward } from 'react-icons/fa'
@@ -168,10 +168,15 @@ export default function Login() {
     }
   }
 
+  const theme = extendTheme({
+    initialColorMode: 'dark',
+    useSystemColorMode: false
+  })
+
   const pageRegister = () => {
     return (
       <div className='container'>
-        <ChakraProvider theme={theme}>
+        <ChakraProvider>
           <Container maxW="lg" py={{ base: '12', md: '24' }} px={{ base: '0', sm: '8' }}>
             <Stack spacing="8">
               <Stack spacing="4">
@@ -232,7 +237,7 @@ export default function Login() {
     return (
       <>
         <div className='container'>
-          <ChakraProvider theme={theme}>
+          <ChakraProvider>
             <Container maxW="lg" py={{ base: '12', md: '24' }} px={{ base: '0', sm: '8' }}>
               <Stack spacing="8">
                 <Stack spacing="4">
@@ -307,7 +312,7 @@ export default function Login() {
   const pageForgotPassword = () => {
     return <>
       <div className='container'>
-        <ChakraProvider theme={theme}>
+        <ChakraProvider>
           <Container maxW="lg" py={{ base: '12', md: '24' }} px={{ base: '0', sm: '8' }}>
             <Stack spacing="8">
               <Stack spacing="4">
