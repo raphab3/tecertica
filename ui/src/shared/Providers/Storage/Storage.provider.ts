@@ -13,3 +13,7 @@ export const deleteFromStorage = (key: string) => {
     localStorage.removeItem(key)
   }
 }
+
+export const clearStorageAll = () => {
+  localStorage.clear()
+}
