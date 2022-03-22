@@ -1,7 +1,6 @@
 import React from 'react'
 import './style.css'
-import { deleteFromStorage } from '../Storage/Storage.provider'
-import { Button } from '@chakra-ui/react'
+import { clearStorageAll } from '../Storage/Storage.provider'
 import { AiOutlineLogout } from 'react-icons/ai'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useAuth } from 'src/hooks/Auth'
@@ -11,7 +10,7 @@ export default function Logout() {
 
   const handleLogout = async (e: any) => {
     e.preventDefault()
-    deleteFromStorage('token')
+    clearStorageAll()
     setState({
       ...state,
       token: ''

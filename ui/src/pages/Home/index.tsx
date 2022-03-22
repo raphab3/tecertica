@@ -156,7 +156,6 @@ export const Home = () => {
       }
       return input
     })
-    setIsDown(-1)
     setShapes(newInputs)
     setIndex(index - 1)
   }
@@ -327,8 +326,9 @@ export const Home = () => {
                   <Canvas shapes={shapes} setShapes={setShapes} preview={preview} setIsDown={setIsDown} isDown={isDown} />
                   <Box borderRadius={10} boxShadow={'dark-lg'} bgImg={`url(${require('../../assets/images/background.png')})`} display={'flex'} justifyContent={'space-between'} alignContent={'space-between'} flexDir={'column'} >
                     <Box display={'flex'} width={screen.width / 9} flexDirection={'column'}>
-                      <PreviewCertificate imgPreview={preview} shapes={shapes} isDown={isDown} jsonClients={jsonClients}/>
+                      <PreviewCertificate imgPreview={preview} shapes={shapes} isDown={isDown} jsonClients={jsonClients} />
                       <Button title={(isDown === -1) ? 'selecione um campo pra ser removido' : ''} disabled={(isDown === -1)} _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={removerInput}>Remover {screen.width < 600 ? '' : 'Campo'}</Button>
+
                     </Box>
                     <Box
                       display={'flex'}
