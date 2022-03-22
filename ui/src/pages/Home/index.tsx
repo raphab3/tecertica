@@ -74,8 +74,6 @@ export const Home = () => {
   const typesAccept = ['image/png', 'image/jpg', 'image/jpeg']
 
   function isSelected() {
-    console.log('teste')
-
     if (shapes.length && isDown !== -1) {
       const shapesForSelect = shapes.map(shape => {
         (shape.index === isDown) ? shape.lineWidth = 4 : shape.lineWidth = 0
