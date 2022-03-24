@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 import * as React from 'react'
 import './style.css'
 import {
@@ -15,7 +16,11 @@ import {
   useToast
 } from '@chakra-ui/react'
 import { FiUpload } from 'react-icons/fi'
-import { AiOutlinePlus, AiOutlineLine, AiOutlinePlusCircle } from 'react-icons/ai'
+import {
+  AiOutlinePlus,
+  AiOutlineLine,
+  AiOutlinePlusCircle
+} from 'react-icons/ai'
 import { BsTrash } from 'react-icons/bs'
 import { Canvas } from 'src/components/Canvas'
 import { PreviewCertificate } from 'src/components/PreviewCertificate'
@@ -72,93 +77,6 @@ export const Home = () => {
   }, [])
 
   const typesAccept = ['image/png', 'image/jpg', 'image/jpeg']
-
-  function isSelected() {
-    if (shapes.length && isDown !== -1) {
-      const shapesForSelect = shapes.map(shape => {
-        (shape.index === isDown) ? shape.lineWidth = 4 : shape.lineWidth = 0
-        return shape
-      })
-      setShapes(shapesForSelect)
-    } else if (isDown === -1) {
-      const shapesForSelect = shapes.map(shape => {
-        shape.lineWidth = 0
-        return shape
-      })
-      setShapes(shapesForSelect)
-    }
-  }
-  React.useEffect(() => {
-    isSelected()
-  }, [isDown])
-
-  function adicionaInput(name: any) {
-    const randomNumber = Math.random()
-    const positionX =
-      250 + (randomNumber > 0.5 ? randomNumber * 200 : randomNumber * -200)
-    const positionY =
-      250 + (randomNumber > 0.5 ? randomNumber * 100 : randomNumber * -100)
-
-    const shape = {
-      index: index,
-      head: name,
-      x: positionX,
-      y: positionY,
-      width: 180,
-      height: 20,
-      fill: '#312e8157',
-      isDragging: false,
-      strokeStyle: '#E7AA32',
-      lineWidth: 0
-    }
-
-    setIndex(index + 1)
-    setShapes([...shapes, shape])
-  }
-
-  function increaseWidth() {
-    if (shapes[isDown].width) {
-      const inputs = [...shapes]
-      inputs[isDown].width += 10
-      setShapes(inputs)
-    }
-  }
-
-  function increaseHeight() {
-    if (shapes[isDown].height) {
-      const inputs = [...shapes]
-      inputs[isDown].height += 1
-      setShapes(inputs)
-    }
-  }
-
-  function decreaseWidth() {
-    if (shapes[isDown].width > 10) {
-      const inputs = [...shapes]
-      inputs[isDown].width -= 10
-      setShapes(inputs)
-    }
-  }
-
-  function decreaseHeight() {
-    if (shapes[isDown].height > 10) {
-      const inputs = [...shapes]
-      inputs[isDown].height -= 1
-      setShapes(inputs)
-    }
-  }
-
-  function removerInput() {
-    const inputs = shapes.filter(shape => shape.index !== isDown)
-    const newInputs = inputs.map(input => {
-      if (input.index > isDown) {
-        input.index -= 1
-      }
-      return input
-    })
-    setShapes(newInputs)
-    setIndex(index - 1)
-  }
 
   function processCsvToJson(csv: any) {
     const lines = csv.split(/\r?\n/g)
@@ -223,9 +141,13 @@ export const Home = () => {
   }
 
   function nextPage() {
-    if ((jsonClients) && page + 10 <= jsonClients.length) {
+    if (jsonClients && page + 10 <= jsonClients.length) {
       setPage(page + 10)
-    } else if ((jsonClients) && (page + 10 > jsonClients.length && jsonClients.length >= 10)) {
+    } else if (
+      jsonClients &&
+      page + 10 > jsonClients.length &&
+      jsonClients.length >= 10
+    ) {
       setPage(jsonClients?.length)
     }
   }
@@ -249,9 +171,14 @@ export const Home = () => {
   }, [])
   return (
     <>
-      <div className='content' >
-        <Grid padding={10} templateRows="1fr 1fr" templateColumns=" 1fr 1fr" bg='dark'>
-          <Flex position={'absolute'} w="100vw" h="100vh" >
+      <div className="content">
+        <Grid
+          padding={10}
+          templateRows="1fr 1fr"
+          templateColumns=" 1fr 1fr"
+          bg="dark"
+        >
+          <Flex position={'absolute'} w="100vw" h="100vh">
             <GridItem>
               <Box flexDirection={'column'}>
                 <Box
@@ -305,7 +232,7 @@ export const Home = () => {
                 </Box>
                 <Box boxShadow={'dark-lg'}>
                   <input
-                    className='input-none'
+                    className="input-none"
                     ref={ref}
                     type="file"
                     name="certificate"
@@ -322,107 +249,17 @@ export const Home = () => {
                     accept=".png,.jpg,.jpeg"
                   />
                 </Box>
-                <Box display={'flex'} flexDir={'row'}>
-                  <Canvas shapes={shapes} setShapes={setShapes} preview={preview} setIsDown={setIsDown} isDown={isDown} />
-                  <Box borderRadius={10} boxShadow={'dark-lg'} bgImg={`url(${require('../../assets/images/background.png')})`} display={'flex'} justifyContent={'space-between'} alignContent={'space-between'} flexDir={'column'} >
-                    <Box display={'flex'} width={screen.width / 9} flexDirection={'column'}>
-                      <PreviewCertificate imgPreview={preview} shapes={shapes} isDown={isDown} jsonClients={jsonClients} />
-                      <Button title={(isDown === -1) ? 'selecione um campo pra ser removido' : ''} disabled={(isDown === -1)} _hover={{ boxShadow: '10px 5px 5px black' }} colorScheme='teal' variant='solid' margin={5} type="button" onClick={removerInput}>Remover {screen.width < 600 ? '' : 'Campo'}</Button>
-
-                    </Box>
-                    <Box
-                      display={'flex'}
-                      width={window.screen.width / 9}
-                      flexDirection={'column'}
-                    >
-                      <Box
-                        display={'flex'}
-                        justifyContent={'center'}
-                        alignContent={'center'}
-                      >
-                        <Button
-                          _hover={{ transform: 'scale(1.2)' }}
-                          colorScheme="teal"
-                          variant="solid"
-                          iconSpacing={'auto'}
-                          rightIcon={<AiOutlineLine />}
-                          type="button"
-                          onClick={decreaseWidth}
-                        ></Button>
-
-                        <Button
-                          _active={{}}
-                          _hover={{}}
-                          cursor={'default'}
-                          colorScheme="teal"
-                          variant="outline"
-                        >
-                          largura
-                        </Button>
-
-                        <Button
-                          _hover={{ transform: 'scale(1.2)' }}
-                          colorScheme="teal"
-                          variant="solid"
-                          iconSpacing={'auto'}
-                          rightIcon={<AiOutlinePlus />}
-                          type="button"
-                          onClick={() => {
-                            increaseWidth()
-                          }}
-                        ></Button>
-                      </Box>
-
-                      <Box
-                        marginBottom={10}
-                        marginTop={10}
-                        display={'flex'}
-                        justifyContent={'center'}
-                        alignContent={'center'}
-                      >
-                        <Button
-                          _hover={{ transform: 'scale(1.2)' }}
-                          colorScheme="teal"
-                          variant="solid"
-                          iconSpacing={'auto'}
-                          rightIcon={<AiOutlineLine />}
-                          type="button"
-                          onClick={decreaseHeight}
-                        ></Button>
-
-                        <Button
-                          _active={{}}
-                          _hover={{}}
-                          cursor={'default'}
-                          colorScheme="teal"
-                          variant="outline"
-                        >
-                          altura
-                        </Button>
-
-                        <Button
-                          _hover={{ transform: 'scale(1.2)' }}
-                          colorScheme="teal"
-                          variant="solid"
-                          iconSpacing={'auto'}
-                          rightIcon={<AiOutlinePlus />}
-                          type="button"
-                          onClick={() => {
-                            increaseHeight()
-                          }}
-                        ></Button>
-                      </Box>
-                    </Box>
-                  </Box>
-                </Box>
+                <Canvas
+                  index={index}
+                  setIndex={setIndex}
+                  jsonClients={jsonClients}
+                  shapes={shapes}
+                  setShapes={setShapes}
+                  preview={preview}
+                  setIsDown={setIsDown}
+                  isDown={isDown}
+                />
               </Box>
-              <Flex marginTop={5} align={'center'} justify={'center'}>
-                {(jsonClients?.length)
-                  ? <Flex bgImg={`url(${require('../../assets/images/background.png')})`} borderRadius={10} padding={5} gap={6} margin={'auto auto'}>
-                    {Object.keys(jsonClients[0]).map(header => <Button key={header} value={header} onClick={(e) => adicionaInput(e.currentTarget.value)} colorScheme='teal' leftIcon={<AiOutlinePlusCircle color={'green'} style={{ fontSize: '1.5em' }} />}>{header}</Button>)}
-                  </Flex>
-                  : ''}
-              </Flex>
             </GridItem>
             <GridItem>
               <Flex
@@ -443,11 +280,21 @@ export const Home = () => {
                     Limpar CSV
                   </Button>
                 </Flex>
-                <span>Lista de pessoas para certificar - {(jsonClients?.length) ? jsonClients?.length - 1 : 0}</span>
-                <span>Página {`${Math.ceil(page / 10) + 1} de ${(jsonClients?.length) ? Math.ceil(jsonClients?.length / 10) : 1}`}</span>
+                <span>
+                  Lista de pessoas para certificar -{' '}
+                  {jsonClients?.length ? jsonClients?.length - 1 : 0}
+                </span>
+                <span>
+                  Página{' '}
+                  {`${Math.ceil(page / 10) + 1} de ${
+                    jsonClients?.length
+                      ? Math.ceil(jsonClients?.length / 10)
+                      : 1
+                  }`}
+                </span>
                 <Box boxShadow={'dark-lg'}>
                   <input
-                    className='input-none'
+                    className="input-none"
                     ref={ref}
                     type="file"
                     name="CSV"
@@ -477,45 +324,44 @@ export const Home = () => {
                     <Tr>
                       {jsonClients?.length
                         ? Object.keys(jsonClients[0]).map((column) => (
-                          <Td key={Math.random()}>{column}</Td>
-                        ))
+                            <Td key={Math.random()}>{column}</Td>
+                          ))
                         : []}
                     </Tr>
                   </Thead>
                   <Tbody>
                     {jsonClients?.length
                       ? jsonClients
-                        .map((client: any) => (
-                          <Tr>
-                            {Object.values(client).map((column: any) => (
-                              <Td
-                                key={Math.random()}
-                                maxW={200}
-                                overflow={'hidden'}
-                                textOverflow={'ellipsis'}
-                                whiteSpace={'nowrap'}
-                              >
-                                {column}
-                              </Td>
-                            ))}
-                          </Tr>
-                        ))
-                        .slice(page, page + 10)
+                          .map((client: any) => (
+                            <Tr>
+                              {Object.values(client).map((column: any) => (
+                                <Td
+                                  key={Math.random()}
+                                  maxW={200}
+                                  overflow={'hidden'}
+                                  textOverflow={'ellipsis'}
+                                  whiteSpace={'nowrap'}
+                                >
+                                  {column}
+                                </Td>
+                              ))}
+                            </Tr>
+                          ))
+                          .slice(page, page + 10)
                       : []}
                   </Tbody>
                 </Table>
                 <Flex justify={'space-between'}>
-                  {jsonClients?.length
-                    ? (
-                      <>
-                        <Button onClick={previousPage}>Anterior</Button>
-                        <Button marginLeft={10} onClick={nextPage}>
-                          Próximo
-                        </Button>
-                      </>
-                    )
-                    : ''
-                  }
+                  {jsonClients?.length ? (
+                    <>
+                      <Button onClick={previousPage}>Anterior</Button>
+                      <Button marginLeft={10} onClick={nextPage}>
+                        Próximo
+                      </Button>
+                    </>
+                  ) : (
+                    ''
+                  )}
                 </Flex>
               </Flex>
             </GridItem>
