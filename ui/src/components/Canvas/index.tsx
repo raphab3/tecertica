@@ -1,4 +1,12 @@
+/* eslint-disable multiline-ternary */
+import { Box, Button, Flex } from '@chakra-ui/react'
 import React, { useEffect, useRef } from 'react'
+import {
+  AiOutlineLine,
+  AiOutlinePlus,
+  AiOutlinePlusCircle
+} from 'react-icons/ai'
+import { PreviewCertificate } from '../PreviewCertificate'
 import './styles.css'
 
 export const Canvas = ({
@@ -6,7 +14,10 @@ export const Canvas = ({
   setShapes,
   preview,
   setIsDown,
-  isDown
+  isDown,
+  jsonClients,
+  index,
+  setIndex
 }: any) => {
   const [startX, setStartX] = React.useState(0)
   const [startY, setStartY] = React.useState(0)
@@ -59,7 +70,13 @@ export const Canvas = ({
       setDragok(false)
       const s: any = shapes[isDown]
       console.log(s)
-      if (s && ((mx < s.x && mx < s.x + s.width) || (mx > s.x && mx > s.x + s.width) || (my > s.y && my > s.y + s.height) || (my < s.y && my < s.y + s.height))) {
+      if (
+        s &&
+        ((mx < s.x && mx < s.x + s.width) ||
+          (mx > s.x && mx > s.x + s.width) ||
+          (my > s.y && my > s.y + s.height) ||
+          (my < s.y && my < s.y + s.height))
+      ) {
         setIsDown(-1)
       }
       for (let i = 0; i < shapes.length; i++) {
@@ -106,6 +123,7 @@ export const Canvas = ({
             } else if (dy > 0) {
               s.y += s.y > HEIGHT - s.height ? -1 : dy
             }
+            console.log(s)
           }
         }
 
@@ -126,9 +144,245 @@ export const Canvas = ({
     }
   }, [preview])
 
+  function isSelected() {
+    if (shapes.length && isDown !== -1) {
+      const shapesForSelect = shapes.map((shape: any) => {
+        shape.index === isDown ? (shape.lineWidth = 4) : (shape.lineWidth = 0)
+        return shape
+      })
+      setShapes(shapesForSelect)
+    } else if (isDown === -1) {
+      const shapesForSelect = shapes.map((shape: any) => {
+        shape.lineWidth = 0
+        return shape
+      })
+      setShapes(shapesForSelect)
+    }
+  }
+  React.useEffect(() => {
+    isSelected()
+  }, [isDown])
+
+  function adicionaInput(name: any) {
+    const randomNumber = Math.random()
+    const positionX =
+      250 + (randomNumber > 0.5 ? randomNumber * 200 : randomNumber * -200)
+    const positionY =
+      250 + (randomNumber > 0.5 ? randomNumber * 100 : randomNumber * -100)
+
+    const shape = {
+      index: index,
+      head: name,
+      x: positionX,
+      y: positionY,
+      width: 180,
+      height: 20,
+      fill: '#312e8157',
+      isDragging: false,
+      strokeStyle: '#E7AA32',
+      lineWidth: 0
+    }
+
+    setIndex(index + 1)
+    setShapes([...shapes, shape])
+  }
+
+  function increaseWidth() {
+    if (shapes[isDown].width) {
+      const inputs = [...shapes]
+      inputs[isDown].width += 10
+      setShapes(inputs)
+    }
+  }
+
+  function increaseHeight() {
+    if (shapes[isDown].height) {
+      const inputs = [...shapes]
+      inputs[isDown].height += 1
+      setShapes(inputs)
+    }
+  }
+
+  function decreaseWidth() {
+    if (shapes[isDown].width > 10) {
+      const inputs = [...shapes]
+      inputs[isDown].width -= 10
+      setShapes(inputs)
+    }
+  }
+
+  function decreaseHeight() {
+    if (shapes[isDown].height > 10) {
+      const inputs = [...shapes]
+      inputs[isDown].height -= 1
+      setShapes(inputs)
+    }
+  }
+
+  function removerInput() {
+    const inputs = shapes.filter((shape: any) => shape.index !== isDown)
+    const newInputs = inputs.map((input: any) => {
+      if (input.index > isDown) {
+        input.index -= 1
+      }
+      return input
+    })
+    setShapes(newInputs)
+    setIndex(index - 1)
+  }
+
   return (
     <>
-      <canvas style={{ border: 0 }} id="canvas" ref={canvasRef} />
+      <Box display={'flex'} flexDir={'row'}>
+        <canvas style={{ border: 0 }} id="canvas" ref={canvasRef} />
+        <Box
+          borderRadius={10}
+          boxShadow={'dark-lg'}
+          bgImg={`url(${require('../../assets/images/background.png')})`}
+          display={'flex'}
+          justifyContent={'space-between'}
+          alignContent={'space-between'}
+          flexDir={'column'}
+        >
+          <Box
+            display={'flex'}
+            width={screen.width / 9}
+            flexDirection={'column'}
+          >
+            <PreviewCertificate
+              imgPreview={preview}
+              shapes={shapes}
+              isDown={isDown}
+              jsonClients={jsonClients}
+            />
+            <Button
+              title={isDown === -1 ? 'selecione um campo pra ser removido' : ''}
+              disabled={isDown === -1}
+              _hover={{ boxShadow: '10px 5px 5px black' }}
+              colorScheme="teal"
+              variant="solid"
+              margin={5}
+              type="button"
+              onClick={removerInput}
+            >
+              Remover {screen.width < 600 ? '' : 'Campo'}
+            </Button>
+          </Box>
+          <Box
+            display={'flex'}
+            width={window.screen.width / 9}
+            flexDirection={'column'}
+          >
+            <Box
+              display={'flex'}
+              justifyContent={'center'}
+              alignContent={'center'}
+            >
+              <Button
+                _hover={{ transform: 'scale(1.2)' }}
+                colorScheme="teal"
+                variant="solid"
+                iconSpacing={'auto'}
+                rightIcon={<AiOutlineLine />}
+                type="button"
+                onClick={decreaseWidth}
+              ></Button>
+
+              <Button
+                _active={{}}
+                _hover={{}}
+                cursor={'default'}
+                colorScheme="teal"
+                variant="outline"
+              >
+                largura
+              </Button>
+
+              <Button
+                _hover={{ transform: 'scale(1.2)' }}
+                colorScheme="teal"
+                variant="solid"
+                iconSpacing={'auto'}
+                rightIcon={<AiOutlinePlus />}
+                type="button"
+                onClick={() => {
+                  increaseWidth()
+                }}
+              ></Button>
+            </Box>
+
+            <Box
+              marginBottom={10}
+              marginTop={10}
+              display={'flex'}
+              justifyContent={'center'}
+              alignContent={'center'}
+            >
+              <Button
+                _hover={{ transform: 'scale(1.2)' }}
+                colorScheme="teal"
+                variant="solid"
+                iconSpacing={'auto'}
+                rightIcon={<AiOutlineLine />}
+                type="button"
+                onClick={decreaseHeight}
+              ></Button>
+
+              <Button
+                _active={{}}
+                _hover={{}}
+                cursor={'default'}
+                colorScheme="teal"
+                variant="outline"
+              >
+                altura
+              </Button>
+
+              <Button
+                _hover={{ transform: 'scale(1.2)' }}
+                colorScheme="teal"
+                variant="solid"
+                iconSpacing={'auto'}
+                rightIcon={<AiOutlinePlus />}
+                type="button"
+                onClick={() => {
+                  increaseHeight()
+                }}
+              ></Button>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+      <Flex marginTop={5} align={'center'} justify={'center'}>
+        {jsonClients?.length ? (
+          <Flex
+            bgImg={`url(${require('../../assets/images/background.png')})`}
+            borderRadius={10}
+            padding={5}
+            gap={6}
+            margin={'auto auto'}
+          >
+            {Object.keys(jsonClients[0]).map((header) => (
+              <Button
+                key={header}
+                value={header}
+                onClick={(e) => adicionaInput(e.currentTarget.value)}
+                colorScheme="teal"
+                leftIcon={
+                  <AiOutlinePlusCircle
+                    color={'green'}
+                    style={{ fontSize: '1.5em' }}
+                  />
+                }
+              >
+                {header}
+              </Button>
+            ))}
+          </Flex>
+        ) : (
+          ''
+        )}
+      </Flex>
     </>
   )
 }
