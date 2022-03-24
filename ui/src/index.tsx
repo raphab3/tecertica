@@ -9,12 +9,13 @@ import AuthContextProvider from './hooks/Auth'
 
 ReactDOM.render(
   <React.StrictMode>
-    <ColorModeScript initialColorMode={theme.config.initialColorMode = 'dark'} />
+    <ColorModeScript
+      initialColorMode={(theme.config.initialColorMode = 'dark')}
+    />
     <AuthContextProvider>
       <App />
     </AuthContextProvider>
-  </React.StrictMode>
-  ,
+  </React.StrictMode>,
   document.getElementById('root')
 )
 
