@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
-import { firebaseConfigEnv } from './env'
+import { env } from './env'
 import {
   getAuth
 } from 'firebase/auth'
@@ -10,13 +10,13 @@ import {
 } from 'firebase/firestore'
 
 const firebaseConfig = {
-  apiKey: firebaseConfigEnv.apiKey,
-  authDomain: firebaseConfigEnv.authDomain,
-  projectId: firebaseConfigEnv.projectId,
-  storageBucket: firebaseConfigEnv.storageBucket,
-  messagingSenderId: firebaseConfigEnv.messagingSenderId,
-  appId: firebaseConfigEnv.appId,
-  measurementId: firebaseConfigEnv.measurementId
+  apiKey: env.firebaseConfigEnv.apiKey,
+  authDomain: env.firebaseConfigEnv.authDomain,
+  projectId: env.firebaseConfigEnv.projectId,
+  storageBucket: env.firebaseConfigEnv.storageBucket,
+  messagingSenderId: env.firebaseConfigEnv.messagingSenderId,
+  appId: env.firebaseConfigEnv.appId,
+  measurementId: env.firebaseConfigEnv.measurementId
 }
 
 // Initialize Firebase

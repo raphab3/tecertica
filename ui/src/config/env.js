@@ -1,6 +1,10 @@
 const envVar = (variable) => process.env[`REACT_APP_${variable}`]
 
-export const firebaseConfigEnv = {
+const app = {
+  apiBaseUrl: envVar('BASE_URL')
+}
+
+const firebaseConfigEnv = {
   apiKey: envVar('apiKey'),
   authDomain: envVar('authDomain'),
   projectId: envVar('projectId'),
@@ -10,4 +14,4 @@ export const firebaseConfigEnv = {
   measurementId: envVar('measurementId')
 }
 
-export const env = { firebaseConfigEnv }
+export const env = { app, firebaseConfigEnv }

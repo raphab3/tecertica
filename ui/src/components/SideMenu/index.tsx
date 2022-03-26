@@ -1,11 +1,11 @@
 import React from 'react'
 import './styles.css'
-import { Flex, Image, scaleFadeConfig } from '@chakra-ui/react'
+import { Flex, Image } from '@chakra-ui/react'
 import Logout from 'src/shared/Providers/Auth/Logout.provider'
 import { useAuth } from 'src/hooks/Auth'
 import { ColorModeSwitcher } from 'src/ColorModeSwitcher'
 import logoImg from '../../assets/images/logotipo.svg'
-import { PreviewCertificate } from '../PreviewCertificate'
+import { AiOutlineWeiboCircle } from 'react-icons/ai'
 
 export const SideMenu = () => {
   const { state } = useAuth()
