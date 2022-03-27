@@ -18,7 +18,7 @@
       "bearerAuth": []
     }
   ],
-  "host": "localhost:9000",
+  "host": "localhost:7000",
   "basePath": "/api/v1",
   "tags": [
     {
@@ -33,13 +33,13 @@
     "/sessions": {
       "post": {
         "tags": ["Session"],
-        "description": "Endpoint to add a user.",
+        "description": "Endpoint to add a Manager.",
         "produces": ["application/xml"],
         "parameters": [
           {
             "name": "obj",
             "in": "body",
-            "description": "Users information.",
+            "description": "Managers information.",
             "required": true,
             "schema": {
               "$ref": "#/definitions/DataSession"
@@ -48,7 +48,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Users created successfully."
+            "description": "Managers created successfully."
           },
           "500": {
             "description": "Internal Server Error"
@@ -56,25 +56,25 @@
         }
       }
     },
-    "/users": {
+    "/Managers": {
       "post": {
-        "tags": ["Users"],
-        "description": "Endpoint to add a user.",
+        "tags": ["Managers"],
+        "description": "Endpoint to add a Manager.",
         "produces": ["application/xml"],
         "parameters": [
           {
             "name": "obj",
             "in": "body",
-            "description": "Users information.",
+            "description": "Managers information.",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/AddUser"
+              "$ref": "#/definitions/AddManager"
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "Users created successfully."
+            "description": "Managers created successfully."
           },
           "500": {
             "description": "Internal Server Error"
@@ -82,9 +82,9 @@
         }
       },
       "get": {
-        "tags": ["Users"],
-        "summary": "Returns a list of users.",
-        "description": "#Get all users",
+        "tags": ["Managers"],
+        "summary": "Returns a list of Managers.",
+        "description": "#Get all Managers",
         "produces": ["application/json"],
         "parameters": [],
         "responses": {
@@ -100,11 +100,11 @@
         }
       }
     },
-    "/users/{id}": {
+    "/Managers/{id}": {
       "get": {
-        "tags": ["Users"],
-        "summary": "Get user by id",
-        "description": "Returns user updated",
+        "tags": ["Managers"],
+        "summary": "Get Manager by id",
+        "description": "Returns Manager updated",
         "produces": ["application/json"],
         "parameters": [
           {
@@ -124,9 +124,9 @@
         }
       },
       "put": {
-        "tags": ["Users"],
-        "summary": "Update user",
-        "description": "Returns user updated",
+        "tags": ["Managers"],
+        "summary": "Update Manager",
+        "description": "Returns Manager updated",
         "produces": ["application/json"],
         "parameters": [
           {
@@ -138,10 +138,10 @@
           {
             "name": "obj",
             "in": "body",
-            "description": "Users information.",
+            "description": "Managers information.",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/UpdateUser"
+              "$ref": "#/definitions/UpdateManager"
             }
           }
         ],
@@ -155,9 +155,9 @@
         }
       },
       "delete": {
-        "tags": ["Users"],
+        "tags": ["Managers"],
         "summary": "Return request status",
-        "description": "Delete user",
+        "description": "Delete Manager",
         "produces": ["application/json"],
         "parameters": [
           {
@@ -182,7 +182,7 @@
     "DataSession": {
       "type": "object",
       "properties": {
-        "username": {
+        "Managername": {
           "type": "string",
           "example": "raphab32"
         },
@@ -191,21 +191,21 @@
           "example": "123456789"
         }
       },
-      "required": ["username", "password"],
+      "required": ["Managername", "password"],
       "xml": {
-        "name": "AddUser"
+        "name": "AddManager"
       }
     },
-    "AddUser": {
+    "AddManager": {
       "type": "object",
       "properties": {
-        "username": {
+        "Managername": {
           "type": "string",
           "example": "mazé2021"
         },
         "password": {
           "type": "string",
-          "example": "user4231"
+          "example": "Manager4231"
         },
         "email": {
           "type": "string",
@@ -214,17 +214,17 @@
       },
       "required": ["name"],
       "xml": {
-        "name": "AddUser"
+        "name": "AddManager"
       }
     },
-    "UpdateUser": {
+    "UpdateManager": {
       "type": "object",
       "properties": {
         "full_name": {
           "type": "string",
           "example": "Marcos Paulo"
         },
-        "username": {
+        "Managername": {
           "type": "string",
           "example": "marquin2001"
         },
@@ -296,7 +296,7 @@
         }
       },
       "xml": {
-        "name": "UpdateUser"
+        "name": "UpdateManager"
       }
     }
   }
