@@ -1,7 +1,8 @@
 import { Router } from 'express'
+import managersRouter from '@modules/manager/infra/http/routes/managersRouter'
 
 const routes = Router()
 
-// Authenticate
+routes.use('/managers', managersRouter)
 
 export default routes
