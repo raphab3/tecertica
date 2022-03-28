@@ -1,18 +1,17 @@
 import app from './app'
-const http = require('http')
-const PORT = process.env.PORT || 9000
+const PORT = process.env.SERVER_PORT || 7000
 
 // Server
-http.createServer(app).listen(`${PORT}`, () => {
+app.listen(`${PORT}`, () => {
   console.log(
     `🔥 Server started on port => ${PORT} 
   \n - Swagger documentation: ${process.env.HOST}:${PORT}/doc
   \n - Unitary tests: ${process.env.HOST}:${PORT}/tests
+  \n - Mongo express: ${process.env.HOST}:8081
   \n`
   )
 })
 
 process.on('SIGINT', () => {
-  http.finally()
   console.log('Server closed')
 })
