@@ -10,14 +10,14 @@ export const CsvList = ({ jsonClients, setJsonClients, page, setPage, resetInput
       .split(/,/g)
       .map((value: any) => value.replace(/"/g, ''))
     const csvJson: any[] = []
-    for (let i = 1; i < lines.length; i++) {
+    for (let i = 1; i < lines?.length; i++) {
       const lineColumn = lines[i].split(/,/g)
       const lineColumnAltered = lineColumn.map((value: any) =>
         value.trim().toLowerCase().replace(/"/g, '')
       )
       let object = {}
 
-      for (let i = 0; i <= columns.length; i++) {
+      for (let i = 0; i <= columns?.length; i++) {
         if (columns[i]) {
           object = { ...object, [columns[i]]: lineColumnAltered[i] }
         }
@@ -41,12 +41,12 @@ export const CsvList = ({ jsonClients, setJsonClients, page, setPage, resetInput
   }
 
   function nextPage() {
-    if (jsonClients && page + 10 < jsonClients.length) {
+    if (jsonClients && page + 10 < jsonClients?.length) {
       setPage(page + 10)
     } else if (
       jsonClients &&
-      page + 10 > jsonClients.length &&
-      jsonClients.length >= 10
+      page + 10 > jsonClients?.length &&
+      jsonClients?.length >= 10
     ) {
       setPage(jsonClients?.length)
     }
@@ -77,24 +77,23 @@ export const CsvList = ({ jsonClients, setJsonClients, page, setPage, resetInput
           leftIcon={<FiUpload />}
           marginBottom={5}
         >
-      Adicionar CSV
+          Adicionar CSV
         </Button>
         <Button leftIcon={<BsTrash />} onClick={clearCsv}>
-      Limpar CSV
+          Limpar CSV
         </Button>
       </Flex>
       <span>
-    Lista de pessoas para certificar -{' '}
+        Lista de pessoas para certificar -{' '}
         {jsonClients?.length ? jsonClients?.length - 1 : 0}
       </span>
-      {(jsonClients.length)
+      {(jsonClients?.length)
         ? <span>
-    Página{' '}
-          {`${Math.ceil(page / 10) + 1} de ${
-            jsonClients?.length
-              ? Math.ceil(jsonClients?.length / 10)
-              : 1
-          }`}
+          Página{' '}
+          {`${Math.ceil(page / 10) + 1} de ${jsonClients?.length
+            ? Math.ceil(jsonClients?.length / 10)
+            : 1
+            }`}
         </span>
         : ''
       }
@@ -163,7 +162,7 @@ export const CsvList = ({ jsonClients, setJsonClients, page, setPage, resetInput
             <>
               <Button onClick={previousPage}>Anterior</Button>
               <Button marginLeft={10} onClick={nextPage}>
-          Próximo
+                Próximo
               </Button>
             </>
           )

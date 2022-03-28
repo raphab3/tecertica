@@ -7,6 +7,7 @@ app.listen(`${PORT}`, () => {
     `🔥 Server started on port => ${PORT} 
   \n - Swagger documentation: ${process.env.HOST}:${PORT}/doc
   \n - Unitary tests: ${process.env.HOST}:${PORT}/tests
+  \n - Mongo express: ${process.env.HOST}:8081
   \n`
   )
 })

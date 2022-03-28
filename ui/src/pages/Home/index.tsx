@@ -8,22 +8,10 @@ import {
   Grid,
   GridItem,
   Select,
-  Table,
-  Tbody,
-  Td,
-  Thead,
-  Tr,
   useToast
 } from '@chakra-ui/react'
 import { FiUpload } from 'react-icons/fi'
-import {
-  AiOutlinePlus,
-  AiOutlineLine,
-  AiOutlinePlusCircle
-} from 'react-icons/ai'
-import { BsTrash } from 'react-icons/bs'
 import { Canvas } from 'src/components/Canvas'
-import { PreviewCertificate } from 'src/components/PreviewCertificate'
 import { CsvList } from 'src/components/CsvList'
 
 interface Shapes {
